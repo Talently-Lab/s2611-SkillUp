@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+/*
+ * Tokens de marca (SkillUp).
+ * Contraste medido contra surface (#FFFFFF) y cream (#F4F3E6):
+ * primary (#FC703C) NO alcanza el mínimo WCAG de 4.5:1 para texto sobre
+ * ninguno de los dos fondos. Por eso el botón primario usa fondo primary
+ * + texto ink (nunca texto blanco). ink es el único color de texto seguro
+ * sobre todos los fondos de esta paleta.
+ */
+@theme {
+  --color-primary: #fc703c;
+  --color-primary-soft: #ffa175;
+  --color-ink: #5d0703;
+  --color-surface: #ffffff;
+  --color-cream: #f4f3e6;
+
+  --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+}
