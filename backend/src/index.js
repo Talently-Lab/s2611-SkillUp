@@ -33,3 +33,9 @@ app.get('/api/salud-db', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en http://localhost:${PORT}`);
 });
+
+// Importar rutas
+const courseRoutes = require('./routes/course.routes');
+
+// Usar rutas bajo el prefijo /api
+app.use('/api/courses', courseRoutes);
