@@ -1,32 +1,27 @@
-import { Link, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
+import Navbar from '../components/layout/Navbar'
+import Footer from '../components/layout/Footer'
 
 function AppLayout() {
   return (
-    <>
-      {/* Nav TEMPORAL para probar las rutas a mano. La reemplaza el Navbar real en FE-06. */}
-      <nav>
-        <Link to="/">Home</Link>
-        {' | '}
-        <Link to="/cursos">Catalog</Link>
-        {' | '}
-        <Link to="/cursos/ejemplo-slug">CourseDetail</Link>
-        {' | '}
-        <Link to="/mis-cursos">Dashboard</Link>
-        {' | '}
-        <Link to="/mis-cursos/ejemplo-slug">EnrolledCourse</Link>
-        {' | '}
-        <Link to="/perfil">Profile</Link>
-        {' | '}
-        <Link to="/login">Login</Link>
-        {' | '}
-        <Link to="/registro">Register</Link>
-        {' | '}
-        <Link to="/admin">Admin</Link>
-        {' | '}
-        <Link to="/ruta-inexistente">NotFound</Link>
-      </nav>
-      <Outlet />
-    </>
+    <div className="flex min-h-dvh flex-col bg-surface">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:font-medium focus:text-ink"
+      >
+        Saltar al contenido
+      </a>
+
+      <header>
+        <Navbar />
+      </header>
+
+      <main id="main-content" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
   )
 }
 
