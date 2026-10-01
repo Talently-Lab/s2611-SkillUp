@@ -7,6 +7,8 @@
  * ninguno de los dos fondos. Por eso el botón primario usa fondo primary
  * + texto ink (nunca texto blanco). ink es el único color de texto seguro
  * sobre todos los fondos de esta paleta.
+ * El ink con opacidad menor a 70% no pasa contraste para texto. Usar como
+ * mínimo ink/70 mientras no exista un token de texto secundario.
  */
 @theme {
   --color-primary: #fc703c;
