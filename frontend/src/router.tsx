@@ -15,6 +15,7 @@ import AdminCourses from './pages/AdminCourses'
 import AdminCourseForm from './pages/AdminCourseForm'
 import AdminUsers from './pages/AdminUsers'
 import ErrorPage from './pages/ErrorPage'
+import UiKit from './pages/UiKit'
 
 // TODO(FE-13): /mis-cursos, /perfil y /admin (y sus subrutas) van a ir protegidas.
 export const router = createBrowserRouter([
@@ -29,6 +30,7 @@ export const router = createBrowserRouter([
       { path: 'mis-cursos', element: <Dashboard /> },
       { path: 'mis-cursos/:slug', element: <EnrolledCourse /> },
       { path: 'perfil', element: <Profile /> },
+      { path: 'ui', element: <UiKit /> },
       { path: '*', element: <NotFound /> },
     ],
   },
