@@ -52,7 +52,7 @@ function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas }: CatalogC
 
       <Link to={`/cursos/${slug}`} className={ctaClasses}>
         <span className="relative">
-          Inscribite
+          Ver más
           <svg
             viewBox="0 0 16 16"
             fill="none"
