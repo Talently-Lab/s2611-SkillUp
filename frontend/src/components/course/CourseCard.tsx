@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import Badge from '../ui/Badge'
 import { nivelLabel, type Instructor, type Nivel } from '../../lib/courses'
 
 // Solo titulo es obligatorio: el dashboard recibe menos datos que el catálogo
@@ -74,17 +75,15 @@ function CourseCard({
           <CoverFallback />
         )}
         {categoria && (
-          <span className="absolute top-3 left-3 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-ink">
+          <Badge tone="brand" className="absolute top-3 left-3">
             {categoria}
-          </span>
+          </Badge>
         )}
       </div>
 
       <div className="mt-4 flex flex-1 flex-col gap-2">
         {nivel && (
-          <span className="self-start rounded-md bg-cream px-2 py-0.5 text-xs font-medium text-ink/80">
-            Nivel: {nivelLabel[nivel]}
-          </span>
+          <Badge className="self-start">Nivel: {nivelLabel[nivel]}</Badge>
         )}
 
         <h3 className="line-clamp-2 text-xl leading-snug font-bold" title={titulo}>

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import Button from '../ui/Button'
 
 type CatalogCardFooterProps = {
   slug: string
@@ -6,22 +6,8 @@ type CatalogCardFooterProps = {
   duracion_semanas?: number
 }
 
-const ctaClasses = [
-  'group/btn squircle relative isolate flex h-12 w-full items-center justify-center overflow-hidden',
-  'rounded-xl bg-primary text-base font-semibold text-ink shadow-sm',
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
-  // Relleno oblicuo que entra de izquierda a derecha en hover
-  'before:absolute before:inset-y-0 before:-left-1/4 before:-z-10 before:w-[150%]',
-  'before:-translate-x-full before:-skew-x-15',
-  // El relleno pasa del naranja claro al crema, como un brillo que cruza el botón
-  'before:bg-linear-45 before:from-primary before:via-primary-soft before:to-cream',
-  'before:transition-transform before:duration-250 before:ease-[cubic-bezier(0.22,1,0.36,1)]',
-  'hover:before:translate-x-0 focus-visible:before:translate-x-0',
-  'motion-reduce:before:transition-none',
-].join(' ')
-
 const arrowClasses = [
-  // Fuera del flujo del texto, así "Inscribite" queda centrado aunque la flecha aparezca
+  // Fuera del flujo del texto, así el texto queda centrado aunque la flecha aparezca
   'absolute top-1/2 left-full ml-2 size-4 -translate-x-2 -translate-y-1/2 opacity-0',
   'transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
   'group-hover/btn:translate-x-0 group-hover/btn:opacity-100',
@@ -50,7 +36,12 @@ function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas }: CatalogC
         </div>
       </div>
 
-      <Link to={`/cursos/${slug}`} className={ctaClasses}>
+      <Button
+        to={`/cursos/${slug}`}
+        size="lg"
+        fullWidth
+        className="group/btn squircle shadow-sm"
+      >
         <span className="relative">
           Ver más
           <svg
@@ -66,7 +57,7 @@ function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas }: CatalogC
             <path d="M3 8h10M9 4l4 4-4 4" />
           </svg>
         </span>
-      </Link>
+      </Button>
     </div>
   )
 }
