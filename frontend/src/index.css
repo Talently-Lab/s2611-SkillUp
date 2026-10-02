@@ -31,3 +31,13 @@ h2,
 h3 {
   font-family: var(--font-display);
 }
+
+
+/*
+ * Esquinas "squircle", la curva continua que usa Apple: se mezcla el círculo
+ * con el cuadrado y la esquina se ve más suave. Los navegadores que todavía
+ * no soportan corner-shape la ignoran y muestran el redondeo normal.
+ */
+@utility squircle {
+  corner-shape: squircle;
+}
