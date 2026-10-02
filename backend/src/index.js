@@ -3,12 +3,21 @@ const express = require('express');
 const cors = require('cors');
 const db = require('./config/db');
 
+// 1. Importar rutas
+const authRoutes = require('./routes/authRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 // Middlewares obligatorios
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
+
+// 2. Montar rutas de la API
+app.use('/api/auth', authRoutes);
 
 // Ruta básica de prueba
 app.get('/', (req, res) => {
