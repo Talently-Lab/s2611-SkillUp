@@ -16,6 +16,9 @@
   --color-ink: #5d0703;
   --color-surface: #ffffff;
   --color-cream: #f4f3e6;
+  
+  /* IMPORTANT! Provisorio hasta que UX defina el color de error. Texto blanco encima: 6.6:1 */
+  --color-danger: #b42318;
 
   --font-display: 'Poppins', ui-sans-serif, system-ui, sans-serif;
   --font-sans: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
