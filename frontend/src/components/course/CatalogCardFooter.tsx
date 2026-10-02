@@ -12,8 +12,10 @@ const ctaClasses = [
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
   // Relleno oblicuo que entra de izquierda a derecha en hover
   'before:absolute before:inset-y-0 before:-left-1/4 before:-z-10 before:w-[150%]',
-  'before:-translate-x-full before:-skew-x-20 before:bg-primary-soft',
-  'before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.22,1,0.36,1)]',
+  'before:-translate-x-full before:-skew-x-15',
+  // El relleno pasa del naranja claro al crema, como un brillo que cruza el botón
+  'before:bg-linear-45 before:from-primary before:via-primary-soft before:to-cream',
+  'before:transition-transform before:duration-250 before:ease-[cubic-bezier(0.22,1,0.36,1)]',
   'hover:before:translate-x-0 focus-visible:before:translate-x-0',
   'motion-reduce:before:transition-none',
 ].join(' ')
