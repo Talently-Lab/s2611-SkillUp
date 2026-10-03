@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
-import AuthLayout from './layouts/AuthLayout'
 import AdminLayout from './layouts/AdminLayout'
 import Home from './pages/Home'
 import Catalog from './pages/Catalog'
@@ -34,14 +33,9 @@ export const router = createBrowserRouter([
       { path: '*', element: <NotFound /> },
     ],
   },
-  {
-    element: <AuthLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      { path: 'login', element: <Login /> },
-      { path: 'registro', element: <Register /> },
-    ],
-  },
+  // Login y Registro arman su propio AuthLayout porque le pasan título y bajada
+  { path: 'login', element: <Login />, errorElement: <ErrorPage /> },
+  { path: 'registro', element: <Register />, errorElement: <ErrorPage /> },
   {
     path: 'admin',
     element: <AdminLayout />,
