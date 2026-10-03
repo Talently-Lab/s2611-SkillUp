@@ -5,6 +5,7 @@ import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
 import { esperar, useAuthForm } from '../hooks/useAuthForm'
+import { useTitulo } from '../hooks/useTitulo'
 import { registroSchema, type RegistroDatos } from '../lib/validaciones'
 
 async function registrarse(_datos: RegistroDatos) {
@@ -15,6 +16,8 @@ async function registrarse(_datos: RegistroDatos) {
 }
 
 function Register() {
+  useTitulo('Crear cuenta')
+
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     registroSchema,
     registrarse,

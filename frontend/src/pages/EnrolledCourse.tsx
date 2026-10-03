@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom'
+import { useTitulo } from '../hooks/useTitulo'
 
 function EnrolledCourse() {
   const { slug } = useParams()
+  useTitulo(slug ?? 'Mi curso')
 
   return (
     <>

@@ -2,9 +2,12 @@ import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
+import { useTitulo } from '../hooks/useTitulo'
 
 // Página interna para ver todos los primitivos juntos (FE-06). No va en el Navbar.
 function UiKit() {
+  useTitulo('UI Kit')
+
   return (
     <>
       <h1 className="mb-8 text-3xl font-bold">UI Kit</h1>
