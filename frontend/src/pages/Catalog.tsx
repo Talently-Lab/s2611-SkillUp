@@ -2,8 +2,11 @@ import CatalogCardFooter from '../components/course/CatalogCardFooter'
 import CourseCard from '../components/course/CourseCard'
 import CourseGrid from '../components/course/CourseGrid'
 import { courses } from '../lib/courses'
+import { useTitulo } from '../hooks/useTitulo'
 
 function Catalog() {
+  useTitulo('Catálogo')
+
   return (
     <>
       <header className="mb-8 flex flex-wrap items-end justify-between gap-2">

@@ -5,6 +5,7 @@ import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
 import { esperar, useAuthForm } from '../hooks/useAuthForm'
+import { useTitulo } from '../hooks/useTitulo'
 import { loginSchema, type LoginDatos } from '../lib/validaciones'
 
 async function iniciarSesion(_datos: LoginDatos) {
@@ -15,6 +16,8 @@ async function iniciarSesion(_datos: LoginDatos) {
 }
 
 function Login() {
+  useTitulo('Iniciar sesión')
+
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     loginSchema,
     iniciarSesion,
