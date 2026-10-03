@@ -15,12 +15,12 @@ const correo = z.string().trim().min(1, MENSAJES.vacio).pipe(z.email(MENSAJES.co
 export const registroSchema = z.object({
   nombre: z.string().trim().min(1, MENSAJES.vacio).min(2, MENSAJES.nombreCorto),
   correo,
-  contrasena: z.string().min(1, MENSAJES.vacio).min(8, MENSAJES.contrasenaCorta),
+  contrasenia: z.string().min(1, MENSAJES.vacio).min(8, MENSAJES.contrasenaCorta),
 })
 
 export const loginSchema = z.object({
   correo,
-  contrasena: z.string().min(1, MENSAJES.vacio),
+  contrasenia: z.string().min(1, MENSAJES.vacio),
 })
 
 export type RegistroDatos = z.infer<typeof registroSchema>

@@ -33,8 +33,8 @@ function Login() {
           <Input name="correo" type="email" autoComplete="email" />
         </FormField>
 
-        <FormField label="Contraseña" error={errores.contrasena} required>
-          <Input name="contrasena" type="password" autoComplete="current-password" />
+        <FormField label="Contraseña" error={errores.contrasenia} required>
+          <Input name="contrasenia" type="password" autoComplete="current-password" />
         </FormField>
 
         <Button type="submit" fullWidth loading={enviando} className="mt-2">

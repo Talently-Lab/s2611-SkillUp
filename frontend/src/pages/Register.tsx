@@ -37,8 +37,8 @@ function Register() {
           <Input name="correo" type="email" autoComplete="email" />
         </FormField>
 
-        <FormField label="Creá una contraseña segura" error={errores.contrasena} required>
-          <Input name="contrasena" type="password" autoComplete="new-password" />
+        <FormField label="Creá una contraseña segura" error={errores.contrasenia} required>
+          <Input name="contrasenia" type="password" autoComplete="new-password" />
         </FormField>
 
         <Button type="submit" fullWidth loading={enviando} className="mt-2">
