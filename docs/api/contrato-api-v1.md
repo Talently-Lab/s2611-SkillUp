@@ -1,7 +1,7 @@
 # Contrato de API v1 — SkillUp Campus
 
 **Estado:** propuesta del Frontend, a confirmar con Backend.
-**Base de referencia:** el DER de la rama `backend-esquema-db`.
+**Base de referencia:** el esquema de la base de datos del proyecto.
 
 Los nombres de campo siguen el castellano que ya usa la base de datos.
 
