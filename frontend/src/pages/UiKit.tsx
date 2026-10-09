@@ -1,3 +1,4 @@
+import SesionDePrueba from '../components/dev/SesionDePrueba'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
@@ -11,6 +12,8 @@ function UiKit() {
   return (
     <>
       <h1 className="mb-8 text-3xl font-bold">UI Kit</h1>
+
+      {import.meta.env.DEV && <SesionDePrueba />}
 
       <section className="mb-10">
         <h2 className="mb-4 text-xl font-semibold">Button</h2>
