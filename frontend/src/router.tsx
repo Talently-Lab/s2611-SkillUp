@@ -15,8 +15,9 @@ import AdminCourseForm from './pages/AdminCourseForm'
 import AdminUsers from './pages/AdminUsers'
 import ErrorPage from './pages/ErrorPage'
 import UiKit from './pages/UiKit'
+import RutaProtegida from './components/auth/RutaProtegida'
+import SoloInvitados from './components/auth/SoloInvitados'
 
-// TODO(FE-13): /mis-cursos, /perfil y /admin (y sus subrutas) van a ir protegidas.
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -26,26 +27,44 @@ export const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: 'cursos', element: <Catalog /> },
       { path: 'cursos/:slug', element: <CourseDetail /> },
-      { path: 'mis-cursos', element: <Dashboard /> },
-      { path: 'mis-cursos/:slug', element: <EnrolledCourse /> },
-      { path: 'perfil', element: <Profile /> },
+      {
+        element: <RutaProtegida />,
+        children: [
+          { path: 'mis-cursos', element: <Dashboard /> },
+          { path: 'mis-cursos/:slug', element: <EnrolledCourse /> },
+          { path: 'perfil', element: <Profile /> },
+        ],
+      },
       { path: 'ui', element: <UiKit /> },
       { path: '*', element: <NotFound /> },
     ],
   },
   // Login y Registro arman su propio AuthLayout porque le pasan título y bajada
-  { path: 'login', element: <Login />, errorElement: <ErrorPage /> },
-  { path: 'registro', element: <Register />, errorElement: <ErrorPage /> },
   {
-    path: 'admin',
-    element: <AdminLayout />,
+    element: <SoloInvitados />,
     errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Navigate to="/admin/cursos" replace /> },
-      { path: 'cursos', element: <AdminCourses /> },
-      { path: 'cursos/nuevo', element: <AdminCourseForm /> },
-      { path: 'cursos/:id/editar', element: <AdminCourseForm /> },
-      { path: 'usuarios', element: <AdminUsers /> },
+      { path: 'login', element: <Login />, errorElement: <ErrorPage /> },
+      { path: 'registro', element: <Register />, errorElement: <ErrorPage /> },
+    ],
+  },
+  {
+    // El control de rol va arriba de AdminLayout para que un alumno nunca
+    // llegue a renderizar el layout de admin, ni por un instante.
+    path: 'admin',
+    element: <RutaProtegida roles={['admin']} />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        element: <AdminLayout />,
+        children: [
+          { index: true, element: <Navigate to="/admin/cursos" replace /> },
+          { path: 'cursos', element: <AdminCourses /> },
+          { path: 'cursos/nuevo', element: <AdminCourseForm /> },
+          { path: 'cursos/:id/editar', element: <AdminCourseForm /> },
+          { path: 'usuarios', element: <AdminUsers /> },
+        ],
+      },
     ],
   },
 ])
