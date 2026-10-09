@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 export const CLAVE_SESION = 'skillup.sesion'
 
-const usuarioSchema = z.object({
+export const usuarioSchema = z.object({
   id: z.number(),
   correo: z.string(),
   rol: z.enum(['alumno', 'admin']),

@@ -4,16 +4,19 @@ export const MENSAJES = {
   vacio: 'Nos falta este dato para poder avanzar.',
   correo: 'Ese correo no parece válido. Revisalo y probá de nuevo.',
   contrasenaCorta: 'La contraseña necesita al menos 8 caracteres.',
-  // Sin texto definido en FE-11: confirmar con UX
-  nombreCorto: 'El nombre necesita al menos 2 caracteres.',
 }
 
 // El pipe hace que el formato de email se revise solo si el campo no está vacío,
-// así cada campo muestra un único error.
-const correo = z.string().trim().min(1, MENSAJES.vacio).pipe(z.email(MENSAJES.correo))
+// así cada campo muestra un único error. Va en minúsculas porque el backend
+// compara el correo exacto: así evitamos cuentas duplicadas por mayúsculas.
+const correo = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .min(1, MENSAJES.vacio)
+  .pipe(z.email(MENSAJES.correo))
 
 export const registroSchema = z.object({
-  nombre: z.string().trim().min(1, MENSAJES.vacio).min(2, MENSAJES.nombreCorto),
   correo,
   contrasenia: z.string().min(1, MENSAJES.vacio).min(8, MENSAJES.contrasenaCorta),
 })

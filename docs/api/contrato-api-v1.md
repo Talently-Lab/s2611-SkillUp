@@ -81,33 +81,24 @@ frontend lee `mensaje` y lo muestra como error general.
 
 ### `POST /api/auth/register`
 
-**Actual.** La ruta hoy está en inglés: `/api/auth/register`.
+**Actual.** Así funciona hoy en el backend (rama `feat/backend-auth-register`).
+La ruta y los nombres de campo todavía no están alineados con el resto de este
+contrato (ver pendientes).
 
-**Propuesto:** pasarla a `/api/auth/registro`, para que todas las rutas del
-proyecto queden en castellano.
-
-Registro simplificado, como pide UX: nombre, correo y contraseña. El resto de
-los datos personales se completan después desde el perfil.
+Registro simplificado, como pide UX: solo correo y contraseña. Los datos
+personales se completan después desde el perfil.
 
 Envía:
 
 ```json
-{ "nombre": "Ana", "correo": "ana@mail.com", "contrasenia": "12345678" }
+{ "correo": "ana@mail.com", "contrasenia": "12345678" }
 ```
 
-**Actual:** `nombre` va a la tabla `PERSONAS`, pero el backend todavía no lo
-guarda. Lo ignora sin romper nada, así que el frontend ya lo puede mandar.
+El frontend manda el correo sin espacios y en minúsculas, porque el backend lo
+compara exacto al buscar duplicados. El backend también acepta `email` y
+`password` como alias; el frontend usa `correo` y `contrasenia`.
 
-**Actual:** el backend acepta la contraseña como `contrasenia` o como
-`password` (y el correo como `correo` o `email`). El frontend eligió
-`contrasenia` y `correo`.
-
-**A confirmar:** que Backend deje `contrasenia` como único nombre y saque el
-alias `password`.
-
-Devuelve `201`.
-
-**Actual.** El registro no devuelve token:
+Devuelve `201`, sin token:
 
 ```json
 {
@@ -122,9 +113,24 @@ Devuelve `201`.
 }
 ```
 
+Después de registrarse, el frontend manda al usuario a login con el correo
+precargado.
+
+Errores, con el formato actual `{ error, mensaje }`:
+
+| Código | Cuándo |
+|---|---|
+| 400 | Falta el correo o la contraseña |
+| 409 | Ya existe una cuenta con ese correo |
+
+**Propuesto:** pasar la ruta a `/api/auth/registro`, para que todas las rutas
+del proyecto queden en castellano.
+
+**A confirmar:** que Backend deje `contrasenia` como único nombre y saque el
+alias `password`.
+
 **A confirmar:** si el registro va a devolver token, como el login, para que el
-usuario quede logueado apenas se registra. Si no, después de registrarse el
-frontend lo manda a la pantalla de login.
+usuario quede logueado apenas se registra.
 
 ### `POST /api/auth/login`
 
@@ -378,10 +384,15 @@ tiene ese campo.
 6. Que `contrasenia` quede como único nombre y se saque el alias `password`.
 7. Pasar la ruta de registro de `/register` a `/registro`.
 8. Si el registro devuelve token para que el usuario quede logueado.
-9. Que el backend guarde el `nombre` que llega en el registro.
+9. El nombre y los datos personales se completan desde el perfil
+   (`PUT /api/mi-perfil`), no en el registro.
 10. Si se adopta el formato de error con `campos`.
 11. Cómo se modela el instructor del curso.
 12. Cómo se guarda la duración del curso.
+13. Alinear la ruta y los nombres de campo del registro entre el contrato y el
+    backend.
+14. Que el backend normalice el correo a minúsculas al registrar y al iniciar
+    sesión.
 
 ## Ya resuelto
 
