@@ -7,7 +7,7 @@ import { invalidarSesion, leerSesion } from './sesion'
 export const MENSAJE_SIN_CONEXION =
   'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.'
 // Sin texto definido por UX: confirmar
-const MENSAJE_GENERICO = 'Algo salió mal. Intentá de nuevo en unos minutos.'
+export const MENSAJE_GENERICO = 'Algo salió mal. Intentá de nuevo en unos minutos.'
 
 export class ApiError extends Error {
   // 0 cuando el servidor no respondió
