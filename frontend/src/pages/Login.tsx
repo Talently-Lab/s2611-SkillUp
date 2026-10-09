@@ -1,20 +1,22 @@
 import { Link, useLocation } from 'react-router-dom'
+import { z } from 'zod'
 import AuthLayout from '../layouts/AuthLayout'
 import Alert from '../components/ui/Alert'
 import Button from '../components/ui/Button'
 import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
-import { esperar, useAuthForm } from '../hooks/useAuthForm'
+import { useAuth } from '../hooks/useAuth'
+import { useAuthForm } from '../hooks/useAuthForm'
 import { useTitulo } from '../hooks/useTitulo'
-import { ApiError } from '../lib/apiClient'
+import { pedir } from '../lib/apiClient'
+import { usuarioSchema } from '../lib/sesion'
 import { loginSchema, type LoginDatos } from '../lib/validaciones'
 
-async function iniciarSesion(_datos: LoginDatos) {
-  // TODO(FE-05): acá va la llamada real a POST /api/auth/login.
-  // Mientras tanto se simula la espera y siempre falla para mostrar el Alert.
-  await esperar(1000)
-  throw new ApiError(401, 'Simulado: sin backend todavía')
-}
+// Respuesta de POST /api/auth/login según el contrato v1
+const respuestaLoginSchema = z.object({
+  token: z.string().min(1),
+  usuario: usuarioSchema,
+})
 
 // Register manda { registro: { correo } } al terminar. El state del historial
 // puede traer cualquier cosa, así que se valida antes de usarlo.
@@ -28,10 +30,29 @@ function leerRegistro(state: unknown): { correo: string } | null {
 function Login() {
   useTitulo('Iniciar sesión')
   const registro = leerRegistro(useLocation().state)
+  const { iniciarSesion } = useAuth()
+
+  async function entrar({ correo, contrasenia }: LoginDatos) {
+    const respuesta = await pedir('/api/auth/login', {
+      metodo: 'POST',
+      cuerpo: { correo, contrasenia },
+    })
+
+    const resultado = respuestaLoginSchema.safeParse(respuesta)
+    if (!resultado.success) {
+      console.error('La respuesta del login no coincide con el contrato:', resultado.error)
+      // No es un ApiError a propósito: useAuthForm muestra el mensaje genérico
+      throw new Error('Respuesta de login inválida')
+    }
+
+    // No se navega acá: al haber sesión, SoloInvitados redirige a "desde" o
+    // según el rol.
+    iniciarSesion(resultado.data.token, resultado.data.usuario)
+  }
 
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     loginSchema,
-    iniciarSesion,
+    entrar,
     { 401: 'Ups, el correo o la contraseña no coinciden. ¿Querés intentarlo de nuevo?' },
   )
 

@@ -98,8 +98,3 @@ export function useAuthForm<S extends z.ZodType<Record<string, unknown>>>(
 function campoDelForm(form: HTMLFormElement, nombre: string) {
   return Array.from(form.elements).some((el) => 'name' in el && el.name === nombre)
 }
-
-// Simula la demora de red mientras no hay backend
-export function esperar(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
