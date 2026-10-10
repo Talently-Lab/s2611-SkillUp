@@ -6,7 +6,7 @@
 
 ## 👥 Integrantes del Equipo
 
-* **Christian Andrade** - *Data Analyst*
+* **Matías Valenzuela** - *Frontend Developer & Data Analyst*
 * **Mauricio Fernando Flores** - *Backend Developer*
 * **Cristian Cañupan** - *Backend Developer*
 * **Deison Jose Barreto Monte** - *Frontend Developer*
