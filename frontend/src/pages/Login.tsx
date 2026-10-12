@@ -30,7 +30,7 @@ function leerRegistro(state: unknown): { correo: string } | null {
 function Login() {
   useTitulo('Iniciar sesión')
   const registro = leerRegistro(useLocation().state)
-  const { iniciarSesion } = useAuth()
+  const { iniciarSesion, motivoCierre } = useAuth()
 
   async function entrar({ correo, contrasenia }: LoginDatos) {
     const respuesta = await pedir('/api/auth/login', {
@@ -53,7 +53,7 @@ function Login() {
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     loginSchema,
     entrar,
-    { 401: 'Ups, el correo o la contraseña no coinciden. ¿Querés intentarlo de nuevo?' },
+    { 401: 'El correo o la contraseña no coinciden. Revisa de nuevo y vuelve a intentar.' },
   )
 
   return (
@@ -64,12 +64,21 @@ function Login() {
       <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-5">
         {errorGeneral && <Alert ref={alertRef}>{errorGeneral}</Alert>}
 
-        {/* Texto provisorio: confirmar con Marketing */}
-        {registro && !errorGeneral && (
-          <Alert variant="success">
-            ¡Listo! Tu cuenta ya está creada. Ingresá con tu correo y contraseña.
-          </Alert>
-        )}
+        {/* Un solo aviso a la vez: cuenta creada gana porque es lo último que pasó */}
+        {!errorGeneral &&
+          (registro ? (
+            // Texto provisorio: confirmar con Marketing
+            <Alert variant="success">
+              ¡Listo! Tu cuenta ya está creada. Ingresá con tu correo y contraseña.
+            </Alert>
+          ) : (
+            motivoCierre === 'expirada' && (
+              <Alert variant="info">
+                Tu sesión se tomó un descanso por inactividad. Vuelve a ingresar para seguir
+                construyendo tu proyecto.
+              </Alert>
+            )
+          ))}
 
         <FormField label="Tu correo principal" error={errores.correo} required>
           <Input name="correo" type="email" autoComplete="email" defaultValue={registro?.correo} />
