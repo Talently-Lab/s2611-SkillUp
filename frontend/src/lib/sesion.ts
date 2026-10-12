@@ -20,15 +20,23 @@ const sesionSchema = z.object({
 export type Usuario = z.infer<typeof usuarioSchema>
 export type Rol = Usuario['rol']
 export type Sesion = z.infer<typeof sesionSchema>
+// Por qué se cerró la sesión. 'manual' es cerrarSesion(); 'expirada', un JWT
+// vencido o un 401 a un pedido con sesión. null cuando no hay motivo que
+// mostrar (por ejemplo, una sesión guardada que estaba corrupta).
+export type MotivoCierre = 'manual' | 'expirada'
 
 // Aviso para cuando la sesión se cierra fuera de React (token vencido o un 401
 // del servidor). El AuthProvider lo escucha para actualizar el estado.
 const avisos = new EventTarget()
 const SESION_CERRADA = 'sesion-cerrada'
 
-export function alCerrarseSesion(listener: () => void) {
-  avisos.addEventListener(SESION_CERRADA, listener)
-  return () => avisos.removeEventListener(SESION_CERRADA, listener)
+// El aviso es sincrónico: el listener corre antes de que vuelva invalidarSesion
+export function alCerrarseSesion(listener: (motivo: MotivoCierre | null) => void) {
+  function manejador(evento: Event) {
+    listener(evento instanceof CustomEvent ? (evento.detail as MotivoCierre | null) : null)
+  }
+  avisos.addEventListener(SESION_CERRADA, manejador)
+  return () => avisos.removeEventListener(SESION_CERRADA, manejador)
 }
 
 export function guardarSesion(sesion: Sesion) {
@@ -48,9 +56,9 @@ export function borrarSesion() {
 }
 
 // Borra la sesión y avisa a la app. Es lo que usa el apiClient ante un 401.
-export function invalidarSesion() {
+export function invalidarSesion(motivo: MotivoCierre | null = null) {
   borrarSesion()
-  avisos.dispatchEvent(new Event(SESION_CERRADA))
+  avisos.dispatchEvent(new CustomEvent(SESION_CERRADA, { detail: motivo }))
 }
 
 // Devuelve la sesión guardada, o null si no hay, si está corrupta o si el token
@@ -73,8 +81,12 @@ export function leerSesion(): Sesion | null {
   }
 
   const resultado = sesionSchema.safeParse(datos)
-  if (!resultado.success || tokenVencido(resultado.data.token)) {
+  if (!resultado.success) {
     invalidarSesion()
+    return null
+  }
+  if (tokenVencido(resultado.data.token)) {
+    invalidarSesion('expirada')
     return null
   }
 

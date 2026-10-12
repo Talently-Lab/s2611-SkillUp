@@ -1,6 +1,6 @@
 import type { ReactNode, Ref } from 'react'
 
-type Variant = 'error' | 'success'
+type Variant = 'error' | 'success' | 'info'
 
 type AlertProps = {
   variant?: Variant
@@ -13,6 +13,7 @@ type AlertProps = {
 const variants: Record<Variant, string> = {
   error: 'border-danger/30 bg-danger/10 text-danger',
   success: 'border-success/30 bg-success/10 text-success',
+  info: 'border-ink/20 bg-cream text-ink',
 }
 
 function AlertIcon({ variant }: { variant: Variant }) {
@@ -28,7 +29,9 @@ function AlertIcon({ variant }: { variant: Variant }) {
       className="mt-0.5 size-5 shrink-0"
     >
       <circle cx="12" cy="12" r="9" />
-      {variant === 'error' ? <path d="M12 7.5v5M12 16h.01" /> : <path d="m8 12 3 3 5-6" />}
+      {variant === 'error' && <path d="M12 7.5v5M12 16h.01" />}
+      {variant === 'success' && <path d="m8 12 3 3 5-6" />}
+      {variant === 'info' && <path d="M12 16.5v-5M12 8h.01" />}
     </svg>
   )
 }
