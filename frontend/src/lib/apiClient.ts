@@ -8,7 +8,7 @@ export const MENSAJE_SIN_CONEXION =
   'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.'
 // Texto de Marketing
 export const MENSAJE_GENERICO =
-  '¡Ups! Tuvimos un pequeño problema técnico por nuestro lado. Danos unos minutos y vuelve a intentar.'
+  '¡Ups! Tuvimos un pequeño problema técnico por nuestro lado. Danos unos minutos y volvé a intentar.'
 
 export class ApiError extends Error {
   // 0 cuando el servidor no respondió
