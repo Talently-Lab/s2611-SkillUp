@@ -53,7 +53,7 @@ function Login() {
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     loginSchema,
     entrar,
-    { 401: 'El correo o la contraseña no coinciden. Revisa de nuevo y vuelve a intentar.' },
+    { 401: 'El correo o la contraseña no coinciden. Revisá de nuevo y volvé a intentar.' },
   )
 
   return (
@@ -74,7 +74,7 @@ function Login() {
           ) : (
             motivoCierre === 'expirada' && (
               <Alert variant="info">
-                Tu sesión se tomó un descanso por inactividad. Vuelve a ingresar para seguir
+                Tu sesión se tomó un descanso por inactividad. Volvé a ingresar para seguir
                 construyendo tu proyecto.
               </Alert>
             )
