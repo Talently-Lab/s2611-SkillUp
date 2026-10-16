@@ -11,6 +11,7 @@ const cursoInscriptoSchema = z.object({
   slug: z.string(),
   titulo: z.string(),
   url_portada: z.string().nullable(),
+  categoria: z.string(),
   cantidad_clases: z.number(),
 })
 
