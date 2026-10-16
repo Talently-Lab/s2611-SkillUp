@@ -6,8 +6,9 @@ import { invalidarSesion, leerSesion } from './sesion'
 
 export const MENSAJE_SIN_CONEXION =
   'No pudimos conectarnos. Revisá tu conexión e intentá de nuevo.'
-// Sin texto definido por UX: confirmar
-export const MENSAJE_GENERICO = 'Algo salió mal. Intentá de nuevo en unos minutos.'
+// Texto de Marketing
+export const MENSAJE_GENERICO =
+  '¡Ups! Tuvimos un pequeño problema técnico por nuestro lado. Danos unos minutos y volvé a intentar.'
 
 export class ApiError extends Error {
   // 0 cuando el servidor no respondió
@@ -99,7 +100,9 @@ export async function pedir<T>(ruta: string, { metodo = 'GET', cuerpo, signal }:
   const datos = await leerJson(respuesta)
 
   if (!respuesta.ok) {
-    if (respuesta.status === 401) invalidarSesion()
+    // Solo cuenta como expirada si el pedido llevaba token: el 401 del login
+    // (correo o contraseña incorrectos) se hace sin sesión.
+    if (respuesta.status === 401 && sesion) invalidarSesion('expirada')
     throw aApiError(respuesta.status, datos)
   }
 
