@@ -1,3 +1,4 @@
+import EnrollButton from '../components/course/EnrollButton'
 import SesionDePrueba from '../components/dev/SesionDePrueba'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
@@ -13,7 +14,19 @@ function UiKit() {
     <>
       <h1 className="mb-8 text-3xl font-bold">UI Kit</h1>
 
-      {import.meta.env.DEV && <SesionDePrueba />}
+      {import.meta.env.DEV && (
+        <>
+          <SesionDePrueba />
+
+          <section className="mb-10">
+            <h2 className="mb-1 text-xl font-semibold">EnrollButton</h2>
+            <p className="mb-4 text-sm text-ink/70">
+              Curso 1. Con VITE_MOCKS=true responde MSW; probá cada rol con la sesión de prueba.
+            </p>
+            <EnrollButton courseId={1} />
+          </section>
+        </>
+      )}
 
       <section className="mb-10">
         <h2 className="mb-4 text-xl font-semibold">Button</h2>
