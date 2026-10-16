@@ -1,24 +1,26 @@
 // src/routes/course.routes.js
+const express = require('express');
+const router = express.Router();
 
-import { Router } from 'express';
-import { 
-    getAllCourses, 
-    getCourseById, 
-    createCourse, 
-    updateCourse, 
-    deleteCourse 
-} from '../controllers/course.controller.js';
-import verifyAdmin from '../middlewares/auth.middleware.js';
+const {
+  getAllCourses,
+  getCourseById,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+} = require('../controllers/course.controller');
 
-const router = Router();
+// Importamos ambos middlewares
+const authMiddleware = require('../middlewares/auth');
+const verifyAdmin = require('../middlewares/auth.middleware');
 
-// Rutas públicas (cualquiera puede ver los cursos)
+// Rutas públicas (cualquiera puede ver el catálogo)
 router.get('/', getAllCourses);
 router.get('/:id', getCourseById);
 
-// Rutas protegidas (Solo administradores)
-router.post('/', verifyAdmin, createCourse);
-router.put('/:id', verifyAdmin, updateCourse);
-router.delete('/:id', verifyAdmin, deleteCourse);
+// Rutas protegidas (Requiere Login + Rol de Administrador)
+router.post('/', authMiddleware, verifyAdmin, createCourse);
+router.put('/:id', authMiddleware, verifyAdmin, updateCourse);
+router.delete('/:id', authMiddleware, verifyAdmin, deleteCourse);
 
-export default router;
+module.exports = router;
