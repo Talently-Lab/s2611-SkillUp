@@ -224,6 +224,14 @@ no incluirlo, el frontend lo resuelve pidiendo las inscripciones aparte.
 **Solo cursos publicados.** El catálogo público nunca devuelve cursos con
 `publicado: false`. Los no publicados se ven únicamente desde el panel admin.
 
+### `GET /api/courses`
+
+**Propuesto (según brief).** La misma ruta que `GET /api/cursos`, con el nombre
+en inglés que usa el brief. El frontend la consume así mientras Backend no
+defina cuál queda, con la misma respuesta paginada (`datos`, `pagina`,
+`totalPaginas`, `total`). Hoy la responde el mock de MSW con los cursos de
+`frontend/src/lib/courses.ts`.
+
 ### `GET /api/cursos/:slug`
 
 Devuelve el curso completo con su temario:
@@ -295,6 +303,30 @@ El progreso queda atado a la inscripción del alumno en ese curso.
 
 **A confirmar:** los valores de `estado`. La propuesta es `"activa"` y
 `"cancelada"`.
+
+### `POST /api/enrollments` y `GET /api/enrollments/me`
+
+**Propuesto (según brief).** Las mismas dos rutas de arriba con los nombres en
+inglés del brief. Es lo que usa el frontend (`frontend/src/lib/inscripciones.ts`)
+y lo que responde el mock de MSW mientras el backend no las tenga.
+
+| Método | Ruta | Equivale a |
+|---|---|---|
+| `POST` | `/api/enrollments` | `POST /api/inscripciones` |
+| `GET` | `/api/enrollments/me` | `GET /api/mis-inscripciones` |
+
+`POST /api/enrollments` envía `{ "course_id": 14 }` en lugar de `id_curso`.
+Requiere token: sin token, `401`; si ya estaba inscripto, `409`; si no, `201`
+con la inscripción creada, con la misma forma que un elemento de `datos` en
+`GET /api/mis-inscripciones`.
+
+`GET /api/enrollments/me` requiere token (sin token, `401`) y devuelve lo mismo
+que `GET /api/mis-inscripciones`: `{ "datos": [...] }`, cada inscripción con su
+`curso` y `clases_completadas`.
+
+**A confirmar:** cuál de los dos juegos de nombres adopta Backend. Si cambia la
+forma de la respuesta, en el frontend se ajusta solo
+`frontend/src/lib/inscripciones.ts`.
 
 ### `GET /api/mis-cursos/:slug`
 
