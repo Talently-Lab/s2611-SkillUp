@@ -52,8 +52,11 @@ function guardarInscripciones(inscripciones: InscripcionGuardada[]) {
 function conCurso({ course_id, ...inscripcion }: InscripcionGuardada): Inscripcion | null {
   const curso = courses.find((c) => c.id === course_id)
   if (!curso) return null
-  const { id, slug, titulo, url_portada, cantidad_clases } = curso
-  return { ...inscripcion, curso: { id, slug, titulo, url_portada, cantidad_clases } }
+  const { id, slug, titulo, url_portada, categoria, cantidad_clases } = curso
+  return {
+    ...inscripcion,
+    curso: { id, slug, titulo, url_portada, categoria, cantidad_clases },
+  }
 }
 
 // Errores con el formato actual del backend ({ error, mensaje }), que es el
