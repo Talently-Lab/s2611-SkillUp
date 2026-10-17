@@ -98,6 +98,18 @@ export const handlers = [
     })
   }),
 
+  http.get(`${RUTA_CURSOS}/:slug`, async ({ params }) => {
+    const falla = await simularRed()
+    if (falla) return falla
+
+    const curso = courses.find(
+      (c) => c.slug === params.slug || String(c.id) === params.slug,
+    )
+    if (!curso) return error(404, 'No encontrado', 'El curso no existe.')
+
+    return HttpResponse.json(curso)
+  }),
+
   http.post(RUTA_INSCRIPCIONES, async ({ request }) => {
     const falla = await simularRed()
     if (falla) return falla
