@@ -6,6 +6,7 @@ const db = require('./config/db');
 // 1. Importar rutas
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/course.routes');
+const enrollmentRoutes = require('./routes/enrollmentRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -20,6 +21,7 @@ app.use(express.json());
 // 2. Montar rutas de la API
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
 
 // Ruta básica de prueba
 app.get('/', (req, res) => {
