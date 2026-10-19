@@ -21,7 +21,7 @@ function renderCourseCard(course: Course) {
       key={course.slug}
       titulo={course.titulo}
       url_portada={course.url_portada}
-      categoria={course.categoria}
+      categoria={course.categoria ?? undefined}
       nivel={course.nivel}
       resumen={course.resumen}
       instructor={course.instructor}

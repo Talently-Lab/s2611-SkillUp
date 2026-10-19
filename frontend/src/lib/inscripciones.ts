@@ -11,7 +11,8 @@ const cursoInscriptoSchema = z.object({
   slug: z.string(),
   titulo: z.string(),
   url_portada: z.string().nullable(),
-  categoria: z.string(),
+  // El backend real la devuelve null en cursos sin categoría
+  categoria: z.string().nullable(),
   cantidad_clases: z.number(),
 })
 
