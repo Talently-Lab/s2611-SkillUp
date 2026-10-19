@@ -23,7 +23,7 @@ export type Course = {
   resumen: string
   descripcion?: string
   url_portada: string | null
-  categoria: string
+  categoria: string | null
   nivel: Nivel
   cantidad_clases: number
   // Duración e instructor no están en el contrato v1. Los piden las cards FE-07 
@@ -234,5 +234,16 @@ export const courses: Course[] = [
       { id: 602, titulo: 'Embeddings y búsqueda sobre documentos propios', orden: 2 },
       { id: 603, titulo: 'Evaluación de respuestas, límites y seguridad', orden: 3 },
     ],
+  },
+  // Copia la forma del curso real del backend: sin categoría y sin clases cargadas
+  {
+    id: 7,
+    slug: 'nodejs-express-desde-cero',
+    titulo: 'Node.js y Express desde cero',
+    resumen: 'Curso recién creado que todavía no tiene categoría ni clases.',
+    url_portada: null,
+    categoria: null,
+    nivel: 'principiante',
+    cantidad_clases: 0,
   },
 ]

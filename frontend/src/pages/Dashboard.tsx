@@ -205,9 +205,11 @@ function ContinuarCurso({ inscripcion }: { inscripcion: Inscripcion }) {
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <p className="text-xs font-semibold tracking-wider text-ink/70 uppercase">
-            {curso.categoria}
-          </p>
+          {curso.categoria && (
+            <p className="text-xs font-semibold tracking-wider text-ink/70 uppercase">
+              {curso.categoria}
+            </p>
+          )}
           <h3 className="text-2xl leading-snug font-bold">{curso.titulo}</h3>
           <ProgressBar valor={avance} label={`Progreso de ${curso.titulo}`} />
           <Button to={`/mis-cursos/${curso.slug}`} size="lg" className="mt-2 self-start">

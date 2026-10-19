@@ -33,14 +33,19 @@ function EnrolledCourseCard({ inscripcion }: EnrolledCourseCardProps) {
       </div>
 
       <div className="mt-4 flex flex-1 flex-col gap-2">
-        <p className="text-xs font-semibold tracking-wider text-ink/70 uppercase">
-          {curso.categoria}
-        </p>
+        {curso.categoria && (
+          <p className="text-xs font-semibold tracking-wider text-ink/70 uppercase">
+            {curso.categoria}
+          </p>
+        )}
         <h3 className="line-clamp-2 text-xl leading-snug font-bold" title={curso.titulo}>
           {curso.titulo}
         </h3>
         <p className="mt-auto pt-2 text-sm text-ink/70">
-          {clases_completadas} de {curso.cantidad_clases} clases vistas
+          {/* Texto provisorio para cursos que todavía no tienen clases */}
+          {curso.cantidad_clases === 0
+            ? 'Todavía no tiene clases cargadas'
+            : `${clases_completadas} de ${curso.cantidad_clases} clases vistas`}
         </p>
         <ProgressBar valor={avance} label={`Progreso de ${curso.titulo}`} />
       </div>
