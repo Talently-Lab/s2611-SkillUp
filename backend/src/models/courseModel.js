@@ -23,8 +23,12 @@ const obtenerTodos = async () => {
   return rows;
 };
 
-// Obtener un curso por ID
-const obtenerPorId = async (id) => {
+// Obtener un curso por ID numérico o por Slug
+const obtenerPorId = async (identificador) => {
+  // Comprueba si contiene únicamente números (ej: "1") o si es un slug (ej: "nodejs-express-desde-cero")
+  const esNumero = /^\d+$/.test(identificador);
+  const columnaFiltro = esNumero ? 'c.id' : 'c.slug';
+
   const query = `
     SELECT 
       c.id,
@@ -39,10 +43,10 @@ const obtenerPorId = async (id) => {
       COUNT(cl.id)::int AS cantidad_clases
     FROM cursos c
     LEFT JOIN clases cl ON cl.id_curso = c.id
-    WHERE c.id = $1
+    WHERE ${columnaFiltro} = $1
     GROUP BY c.id;
   `;
-  const { rows } = await db.query(query, [id]);
+  const { rows } = await db.query(query, [identificador]);
   return rows[0];
 };
 

@@ -17,20 +17,30 @@ const getAllCourses = async (req, res) => {
   }
 };
 
-// 2. GET by id
+// 2. GET by id or slug
 const getCourseById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Captura tanto /api/courses/1 como /api/courses/nodejs-express-desde-cero
     const course = await courseModel.obtenerPorId(id);
 
+    // Si no existe ni por ID ni por Slug, responde con 404 limpio
     if (!course) {
-      return res.status(404).json({ success: false, message: 'Curso no encontrado' });
+      return res.status(404).json({
+        success: false,
+        message: 'Curso no encontrado',
+      });
     }
 
-    return res.status(200).json({ success: true, data: course });
+    return res.status(200).json({
+      success: true,
+      data: course,
+    });
   } catch (error) {
     console.error('Error en getCourseById:', error);
-    return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    return res.status(500).json({
+      success: false,
+      message: 'Error interno del servidor',
+    });
   }
 };
 
