@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, ReactNode, Ref } from 'react'
 import { Link } from 'react-router-dom'
 import Spinner from './Spinner'
 
@@ -12,6 +12,8 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   fullWidth?: boolean
   // Con "to" se dibuja un Link: el botón navega en vez de ejecutar una acción
   to?: string
+  // Para mover el foco al botón (ej. Cancelar al abrir un ConfirmDialog)
+  ref?: Ref<HTMLButtonElement>
   children: ReactNode
 }
 
@@ -50,6 +52,7 @@ function Button({
   loading = false,
   fullWidth = false,
   to,
+  ref,
   type = 'button',
   disabled,
   className = '',
@@ -70,6 +73,7 @@ function Button({
 
   return (
     <button
+      ref={ref}
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
