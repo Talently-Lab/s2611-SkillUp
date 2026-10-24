@@ -1,9 +1,16 @@
+import AdminPageHeader from '../components/admin/AdminPageHeader'
 import { useTitulo } from '../hooks/useTitulo'
 
 function AdminUsers() {
   useTitulo('Administrar usuarios')
 
-  return <h1>AdminUsers</h1>
+  return (
+    <AdminPageHeader
+      titulo="Usuarios"
+      // Texto provisorio: confirmar con Marketing
+      descripcion="Consultá quiénes están registrados en la plataforma."
+    />
+  )
 }
 
 export default AdminUsers

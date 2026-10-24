@@ -20,7 +20,7 @@ function Navbar() {
   }
 
   return (
-    <nav className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+    <nav aria-label="Principal" className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
       <NavLink to="/" className="font-display text-lg font-semibold text-ink sm:text-xl">
         SkillUp Campus
       </NavLink>

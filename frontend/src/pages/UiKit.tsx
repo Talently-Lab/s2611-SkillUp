@@ -1,10 +1,48 @@
+import { useEffect, useRef, useState } from 'react'
 import EnrollButton from '../components/course/EnrollButton'
 import SesionDePrueba from '../components/dev/SesionDePrueba'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
+import ConfirmDialog from '../components/ui/ConfirmDialog'
 import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
 import { useTitulo } from '../hooks/useTitulo'
+
+// Simula una acción que tarda 1 segundo para ver el estado cargando
+function ConfirmDialogDemo() {
+  const [abierto, setAbierto] = useState(false)
+  const [cargando, setCargando] = useState(false)
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+
+  useEffect(() => () => clearTimeout(timeoutRef.current), [])
+
+  function confirmar() {
+    setCargando(true)
+    timeoutRef.current = setTimeout(() => {
+      setCargando(false)
+      setAbierto(false)
+    }, 1000)
+  }
+
+  return (
+    <>
+      <Button variant="danger" onClick={() => setAbierto(true)}>
+        Eliminar curso
+      </Button>
+
+      <ConfirmDialog
+        open={abierto}
+        titulo="¿Eliminar este curso?"
+        mensaje="Esta acción no se puede deshacer."
+        textoConfirmar="Eliminar"
+        variante="peligro"
+        cargando={cargando}
+        onConfirmar={confirmar}
+        onCancelar={() => setAbierto(false)}
+      />
+    </>
+  )
+}
 
 // Página interna para ver todos los primitivos juntos (FE-06). No va en el Navbar.
 function UiKit() {
@@ -71,6 +109,11 @@ function UiKit() {
           <Badge tone="success">Activa</Badge>
           <Badge tone="danger">Cancelada</Badge>
         </div>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="mb-4 text-xl font-semibold">ConfirmDialog</h2>
+        <ConfirmDialogDemo />
       </section>
 
       <section className="mb-10 max-w-md">
