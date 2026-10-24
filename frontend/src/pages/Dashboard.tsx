@@ -89,10 +89,29 @@ function Dashboard() {
     return (
       <>
         {encabezado}
-        {/* Texto provisorio: confirmar con Marketing */}
-        <p className="mb-6 text-ink/70">Todavía no te inscribiste en ningún curso.</p>
-        <div className={gridClasses}>
-          <SumarCursoCard />
+        <div className="flex flex-col items-center rounded-2xl border border-ink/10 bg-cream/50 px-6 py-12 text-center">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            focusable="false"
+            className="size-16 text-ink/40"
+          >
+            <path d="M12 7v14" />
+            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+          </svg>
+          <h2 className="mt-4 text-2xl font-bold">Tu panel está muy tranquilo... ¡por ahora!</h2>
+          <p className="mt-2 max-w-md text-ink/70">
+            Todavía no tenés cursos activos. ¿Qué tal si explorás el catálogo y das tu primer paso
+            en tecnología? Tu primer proyecto está a un clic de distancia.
+          </p>
+          <Button to="/cursos" variant="primary" size="lg" className="mt-6">
+            Explorar el catálogo
+          </Button>
         </div>
       </>
     )
@@ -224,7 +243,7 @@ function ContinuarCurso({ inscripcion }: { inscripcion: Inscripcion }) {
 function SumarCursoCard() {
   return (
     <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border-2 border-dashed border-ink/20 bg-cream/50 p-6 text-center">
-      {/* p y no h3: en el estado vacío no hay h2 y se saltaría un nivel. font-display
+      {/* p y no h3: es una tarjeta de acción, no el título de una sección. font-display
           porque los h3 lo toman de index.css */}
       <p className="font-display text-lg font-bold">Sumar nuevo curso a tu plan</p>
       <Button to="/cursos" variant="secondary">
