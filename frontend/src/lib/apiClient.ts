@@ -109,6 +109,17 @@ export async function pedir<T>(ruta: string, { metodo = 'GET', cuerpo, signal }:
   return datos as T
 }
 
+// Si la respuesta no tiene la forma esperada no es un ApiError a propósito:
+// quien la use muestra el mensaje genérico, igual que en el login.
+export function validar<T>(schema: z.ZodType<T>, datos: unknown, ruta: string): T {
+  const resultado = schema.safeParse(datos)
+  if (!resultado.success) {
+    console.error(`La respuesta de ${ruta} no coincide con el contrato:`, resultado.error)
+    throw new Error(`Respuesta inválida de ${ruta}`)
+  }
+  return resultado.data
+}
+
 // Un 204 o un error de un proxy pueden venir vacíos o en HTML: en esos casos
 // no hay JSON que leer.
 async function leerJson(respuesta: Response): Promise<unknown> {
