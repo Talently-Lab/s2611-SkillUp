@@ -2,17 +2,19 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
 
-//Registro
+// Registro
 const register = async (req, res) => {
   try {
-    // Permite recibir email o correo, y password o contrasenia
+    // Permite recibir email o correo, password o contrasenia, y nombre/apellido en español o inglés
     const correo = req.body.email || req.body.correo;
     const contrasenia = req.body.password || req.body.contrasenia;
+    const nombre = req.body.name || req.body.nombre;
+    const apellido = req.body.lastname || req.body.apellido || '';
 
-    if (!correo || !contrasenia) {
+    if (!correo || !contrasenia || !nombre) {
       return res.status(400).json({
         error: 'Datos incompletos',
-        mensaje: 'El correo y la contraseña son obligatorios',
+        mensaje: 'El correo, la contraseña y el nombre son obligatorios',
       });
     }
 
@@ -28,8 +30,13 @@ const register = async (req, res) => {
     // Hashear la contraseña (10 rondas)
     const contraseniaHash = await bcrypt.hash(contrasenia, 10);
 
-    // Guardar en la base de datos
-    const nuevoUsuario = await userModel.crearUsuario(correo, contraseniaHash);
+    // Guardar en la base de datos (usuarios + personas)
+    const nuevoUsuario = await userModel.crearUsuario(
+      correo,
+      contraseniaHash,
+      nombre,
+      apellido
+    );
 
     return res.status(201).json({
       mensaje: 'Usuario registrado exitosamente',
@@ -57,7 +64,7 @@ const login = async (req, res) => {
       });
     }
 
-    // Buscar usuario en la base de datos
+    // Buscar usuario en la base de datos (incluyendo personas vía LEFT JOIN)
     const usuario = await userModel.buscarPorCorreo(correo);
     if (!usuario) {
       return res.status(401).json({
@@ -94,6 +101,8 @@ const login = async (req, res) => {
         id: usuario.id,
         correo: usuario.correo,
         rol: usuario.rol,
+        nombre: usuario.nombre || '',
+        apellido: usuario.apellido || '',
       },
     });
   } catch (error) {

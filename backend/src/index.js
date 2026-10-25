@@ -7,6 +7,7 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/course.routes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -22,6 +23,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+
+// Manejador global de errores (DEBE IR AL FINAL DE TODAS LAS RUTAS)
+app.use(errorHandler);
 
 // Ruta básica de prueba
 app.get('/', (req, res) => {
