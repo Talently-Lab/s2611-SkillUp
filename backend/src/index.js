@@ -7,7 +7,7 @@ const db = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/course.routes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
-
+const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -22,7 +22,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
-
+app.use('/api/admin', adminRoutes);
 // Ruta básica de prueba
 app.get('/', (req, res) => {
   res.json({ mensaje: 'API SkillUp Campus operativa' });
