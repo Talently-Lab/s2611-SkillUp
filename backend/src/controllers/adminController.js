@@ -1,33 +1,33 @@
 // src/controllers/adminController.js
+const pool = require('../config/db');
 
 const getAllUsers = async (req, res) => {
     try {
-        // Simulación adaptada para devolver un array de usuarios con la clave 'datos' que espera el componente de la tabla
-        const mockUsers = [
-            { 
-                id: 1, 
-                nombre: "Admin Master", 
-                correo: "admin@skillup.com", 
-                rol: "admin", 
-                fecha_registro: "2026-09-01T10:00:00Z" 
-            },
-            { 
-                id: 2, 
-                nombre: "", // Manejado vacío como pidió 
-                correo: "juan@example.com", 
-                rol: "student", 
-                fecha_registro: "2026-09-10T12:30:00Z" 
-            }
-        ];
+        const query = `
+            SELECT 
+                u.id,
+                p.nombre,
+                p.apellido,
+                u.correo,
+                u.rol,
+                u.creado_en AS fecha_registro
+            FROM usuarios u
+            LEFT JOIN personas p ON p.id_usuario = u.id
+        `;
 
-        // Respuesta con la clave 'datos' que espera el componente de la tabla
-        return res.status(200).json({
-            datos: mockUsers
+        const resultado = await pool.query(query);
+
+        res.status(200).json({
+            success: true,
+            total: resultado.rowCount,
+            datos: resultado.rows
         });
+
     } catch (error) {
-        return res.status(500).json({ 
-            success: false, 
-            message: error.message 
+        console.error('Error al obtener usuarios:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error interno del servidor'
         });
     }
 };
