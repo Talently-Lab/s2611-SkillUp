@@ -8,7 +8,7 @@ const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/course.routes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const errorHandler = require('./middlewares/errorHandler');
-
+const adminRoutes = require('./routes/adminRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
