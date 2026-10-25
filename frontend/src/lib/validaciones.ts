@@ -4,6 +4,8 @@ export const MENSAJES = {
   vacio: 'Nos falta este dato para poder avanzar.',
   correo: 'Ese correo no parece válido. Revisalo y probá de nuevo.',
   contrasenaCorta: 'La contraseña necesita al menos 8 caracteres.',
+  nombreCorto: 'El nombre necesita al menos 2 caracteres.',
+  nombreLargo: 'El nombre puede tener hasta 50 caracteres. Probá con una versión más corta.',
 }
 
 // El pipe hace que el formato de email se revise solo si el campo no está vacío,
@@ -17,6 +19,12 @@ const correo = z
   .pipe(z.email(MENSAJES.correo))
 
 export const registroSchema = z.object({
+  nombre: z
+    .string()
+    .trim()
+    .min(1, MENSAJES.vacio)
+    .min(2, MENSAJES.nombreCorto)
+    .max(50, MENSAJES.nombreLargo),
   correo,
   contrasenia: z.string().min(1, MENSAJES.vacio).min(8, MENSAJES.contrasenaCorta),
 })
