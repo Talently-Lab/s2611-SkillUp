@@ -1,5 +1,21 @@
 const db = require('../config/db'); // O la ruta a tu conexión con pg.Pool
 
+const getAllUsers = async () => {
+  const query = `
+    SELECT
+      u.id,
+      p.nombre,
+      p.apellido,
+      u.correo,
+      u.rol,
+      u.creado_en AS fecha_registro
+    FROM usuarios u
+    LEFT JOIN personas p ON p.id_usuario = u.id;
+  `;
+  const { rows } = await db.query(query);
+  return rows;
+};
+
 // 1. Registro con Transacción (usuarios + personas)
 const crearUsuario = async (correo, contraseniaHash, nombre, apellido) => {
   // Obtenemos un cliente individual del pool para la transacción
@@ -65,6 +81,7 @@ const buscarPorCorreo = async (correo) => {
 };
 
 module.exports = {
+  getAllUsers,
   crearUsuario,
   buscarPorCorreo,
 };

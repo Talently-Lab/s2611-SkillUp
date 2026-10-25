@@ -1,6 +1,19 @@
 // backend/src/models/enrollmentModel.js
 const db = require('../config/db');
 
+const getAllEnrollments = async () => {
+  const query = `
+    SELECT
+      i.id,
+      i.id_usuario AS "userId",
+      i.id_curso AS "courseId",
+      i.fecha_inscripcion AS "enrolledAt"
+    FROM inscripciones i;
+  `;
+  const { rows } = await db.query(query);
+  return rows;
+};
+
 // 1. Verificar si el usuario ya está inscripto a un curso específico
 const buscarInscripcion = async (idUsuario, idCurso) => {
   const query = `
@@ -116,6 +129,7 @@ const obtenerCursosPorUsuario = async (idUsuario) => {
 };
 
 module.exports = {
+  getAllEnrollments,
   buscarInscripcion,
   verificarCursoExiste,
   crearInscripcion,

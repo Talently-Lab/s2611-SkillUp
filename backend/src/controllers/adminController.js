@@ -1,26 +1,15 @@
 // src/controllers/adminController.js
-const pool = require('../config/db');
+const userModel = require('../models/userModel');
+const enrollmentModel = require('../models/enrollmentModel');
 
 const getAllUsers = async (req, res) => {
     try {
-        const query = `
-            SELECT 
-                u.id,
-                p.nombre,
-                p.apellido,
-                u.correo,
-                u.rol,
-                u.creado_en AS fecha_registro
-            FROM usuarios u
-            LEFT JOIN personas p ON p.id_usuario = u.id
-        `;
-
-        const resultado = await pool.query(query);
+        const usuarios = await userModel.getAllUsers();
 
         res.status(200).json({
             success: true,
-            total: resultado.rowCount,
-            datos: resultado.rows
+            total: usuarios.length,
+            datos: usuarios
         });
 
     } catch (error) {
@@ -34,18 +23,19 @@ const getAllUsers = async (req, res) => {
 
 const getAllEnrollments = async (req, res) => {
     try {
-        // Simulación o consulta a PostgreSQL
-        const mockEnrollments = [
-            { id: 1, userId: 2, courseId: 1, enrolledAt: "2026-09-10T08:00:00Z" }
-        ];
+        const inscripciones = await enrollmentModel.getAllEnrollments();
 
         return res.status(200).json({
             success: true,
-            count: mockEnrollments.length,
-            data: mockEnrollments
+            count: inscripciones.length,
+            data: inscripciones
         });
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        console.error('Error al obtener inscripciones:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Error interno del servidor al obtener las inscripciones'
+        });
     }
 };
 
