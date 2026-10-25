@@ -23,6 +23,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Manejador global de errores (DEBE IR AL FINAL DE TODAS LAS RUTAS)
 app.use(errorHandler);
