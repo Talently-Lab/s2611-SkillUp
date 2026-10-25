@@ -9,6 +9,9 @@ export const MENSAJE_SIN_CONEXION =
 // Texto de Marketing
 export const MENSAJE_GENERICO =
   '¡Ups! Tuvimos un pequeño problema técnico por nuestro lado. Danos unos minutos y volvé a intentar.'
+// 429 del rate limit de login y registro. Texto provisorio: confirmar con Marketing
+export const MENSAJE_DEMASIADOS_INTENTOS =
+  'Hiciste muchos intentos seguidos. Esperá un minuto y volvé a intentar.'
 
 export class ApiError extends Error {
   // 0 cuando el servidor no respondió
