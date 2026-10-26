@@ -6,6 +6,7 @@ import Alert from '../components/ui/Alert'
 import Badge from '../components/ui/Badge'
 import Button from '../components/ui/Button'
 import { useTitulo } from '../hooks/useTitulo'
+import { datosDeCurso, registrarVistaUnaVez } from '../lib/analytics'
 import { ApiError, MENSAJE_GENERICO, MENSAJE_SIN_CONEXION } from '../lib/apiClient'
 import { nivelLabel, obtenerCurso, type Course } from '../lib/courses'
 
@@ -67,6 +68,17 @@ function ContenidoDetalle({ slug }: { slug: string }) {
       })
     return () => controlador.abort()
   }, [slug, intento])
+
+  // GA4: una vez por visita a cada curso, cuando ya cargó
+  useEffect(() => {
+    if (resultado.estado !== 'listo') return
+    const { curso } = resultado
+    registrarVistaUnaVez(
+      'view_course_detail',
+      { ...datosDeCurso(curso), level: curso.nivel },
+      `view_course_detail.${curso.id}`,
+    )
+  }, [resultado])
 
   function reintentar() {
     setResultado(CARGANDO)
@@ -179,7 +191,8 @@ function ContenidoDetalle({ slug }: { slug: string }) {
           </dl>
 
           <div className="mt-2">
-            <EnrollButton courseId={curso.id} />
+            {/* Tenemos que pasarle el slug y la category al botón de inscripción porque lo usará GA4*/}
+            <EnrollButton courseId={curso.id} slug={curso.slug} categoria={curso.categoria} />
           </div>
         </div>
 

@@ -14,8 +14,8 @@ import { eliminarCurso } from '../lib/cursosAdmin'
 
 export type Aviso = { tipo: 'success' | 'error'; texto: string }
 
-// El formulario vuelve a esta página con el aviso de "curso creado" o "cambios
-// guardados" en el state de la navegación
+// El formulario vuelve a esta página con el aviso de "curso creado" o
+//  "cambios guardados" en el state de la navegación
 function avisoDeNavegacion(state: unknown): Aviso | null {
   if (typeof state === 'object' && state !== null && 'aviso' in state) {
     return state.aviso as Aviso
@@ -41,14 +41,12 @@ function AdminCourses() {
   const [aviso, setAviso] = useState<Aviso | null>(() => avisoDeNavegacion(location.state))
   const avisoRef = useRef<HTMLDivElement>(null)
 
-  // Se borra el aviso del historial apenas se lee, así no vuelve a salir al
-  // recargar la página
+  // Se borra el aviso del historial apenas se lee, así no vuelve a salir al recargar la página
   useEffect(() => {
     if (location.state) navigate(location.pathname, { replace: true, state: null })
   }, [location.state, location.pathname, navigate])
 
-  // La fila borrada se lleva el botón que tenía el focus, así que se pasa al aviso
-  // para que no quede perdido en la página
+  // La fila borrada se lleva el botón que tenía el focus
   useEffect(() => {
     if (aviso) avisoRef.current?.focus()
   }, [aviso])
@@ -114,7 +112,7 @@ function AdminCourses() {
         <TablaCursos cursos={cursos} onEliminar={setAEliminar} />
       )}
 
-      {/* Textos provisorios: confirmar con Marketing */}
+      {/* TODO: Textos provisorios, hay que confirmar con Marketing */}
       <ConfirmDialog
         open={aEliminar !== null}
         titulo="¿Eliminar este curso?"

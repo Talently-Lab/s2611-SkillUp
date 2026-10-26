@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
+import { datosDeCurso, registrarEvento, tipoDeError } from '../../lib/analytics'
 import { ApiError, MENSAJE_GENERICO, MENSAJE_SIN_CONEXION } from '../../lib/apiClient'
 import { inscribirse, obtenerMisInscripciones } from '../../lib/inscripciones'
 import Alert from '../ui/Alert'
@@ -8,18 +9,29 @@ import Button from '../ui/Button'
 
 type EnrollButtonProps = {
   courseId: number
+  // Los siguientes valores solo se usan para los eventos de GA4, por eso son "opcionales":
+  slug?: string
+  categoria?: string | null
 }
 
 // Botón de inscripción del detalle de curso (FE-14). Sin sesión manda a login;
 // al admin no se le muestra.
-function EnrollButton({ courseId }: EnrollButtonProps) {
+function EnrollButton({ courseId, slug, categoria }: EnrollButtonProps) {
   const { usuario } = useAuth()
   const irALogin = useIrALogin()
 
+  // GA4: sin sesión cuenta como intento y como error sin_sesion, antes de ir al login
+  function inscribirSinSesion() {
+    const curso = datosDeCurso({ id: courseId, slug, categoria })
+    registrarEvento('attempt_enrollment', curso)
+    registrarEvento('enrollment_error', { ...curso, error_type: 'sin_sesion' })
+    irALogin()
+  }
+
   if (!usuario) {
     return (
-      // Texto provisorio: confirmar con Marketing
-      <Button size="lg" onClick={irALogin}>
+      // TODO: Texto provisorio, hay que confirmar con Marketing
+      <Button size="lg" onClick={inscribirSinSesion}>
         Inscribirme
       </Button>
     )
@@ -29,7 +41,14 @@ function EnrollButton({ courseId }: EnrollButtonProps) {
 
   // La key vuelve a montar el botón si cambia el usuario o el curso: el estado
   // arranca de cero y la consulta se repite sin arrastrar la anterior.
-  return <BotonAlumno key={`${usuario.id}-${courseId}`} courseId={courseId} />
+  return (
+    <BotonAlumno
+      key={`${usuario.id}-${courseId}`}
+      courseId={courseId}
+      slug={slug}
+      categoria={categoria}
+    />
+  )
 }
 
 // Igual que RutaProtegida: login vuelve a esta página después de entrar
@@ -41,7 +60,7 @@ function useIrALogin() {
 
 type Estado = 'consultando' | 'disponible' | 'inscribiendo' | 'inscripto' | 'recienInscripto'
 
-function BotonAlumno({ courseId }: EnrollButtonProps) {
+function BotonAlumno({ courseId, slug, categoria }: EnrollButtonProps) {
   const [estado, setEstado] = useState<Estado>('consultando')
   const [error, setError] = useState<string | null>(null)
   const irALogin = useIrALogin()
@@ -86,10 +105,18 @@ function BotonAlumno({ courseId }: EnrollButtonProps) {
     porClic.current = true
     setError(null)
     setEstado('inscribiendo')
+    // GA4: el intento va antes de la respuesta de la API
+    const curso = datosDeCurso({ id: courseId, slug, categoria })
+    registrarEvento('attempt_enrollment', curso)
     try {
       await inscribirse(courseId)
+      registrarEvento('enrollment_success', curso)
       setEstado('recienInscripto')
     } catch (error) {
+      registrarEvento('enrollment_error', {
+        ...curso,
+        error_type: tipoDeError(error, { 401: 'sesion_expirada', 409: 'ya_inscripto' }),
+      })
       if (error instanceof ApiError && error.status === 409) {
         setEstado('inscripto')
         return
@@ -108,7 +135,7 @@ function BotonAlumno({ courseId }: EnrollButtonProps) {
     }
   }
 
-  // Textos provisorios: confirmar con Marketing
+  // TODO: Textos provisorios, hay que confirmar con Marketing
   if (estado === 'recienInscripto') {
     return (
       <div className="flex flex-col items-start gap-3">
@@ -122,7 +149,7 @@ function BotonAlumno({ courseId }: EnrollButtonProps) {
     )
   }
 
-  // Textos provisorios: confirmar con Marketing
+  // TODO: Textos provisorios, hay que confirmar con Marketing
   if (estado === 'inscripto') {
     return (
       <div className="flex flex-col items-start gap-3">
@@ -143,7 +170,7 @@ function BotonAlumno({ courseId }: EnrollButtonProps) {
   return (
     <div className="flex flex-col items-start gap-3">
       {error && <Alert ref={avisoRef}>{error}</Alert>}
-      {/* Texto provisorio: confirmar con Marketing */}
+      {/* TODO: Texto provisorio, hay que confirmar con Marketing */}
       <Button
         size="lg"
         onClick={inscribir}
