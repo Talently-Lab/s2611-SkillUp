@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import AdminPageHeader from '../components/admin/AdminPageHeader'
 import Alert from '../components/ui/Alert'
 import Badge from '../components/ui/Badge'
@@ -11,7 +12,16 @@ import { ApiError, MENSAJE_GENERICO, MENSAJE_SIN_CONEXION } from '../lib/apiClie
 import { nivelLabel, type Course } from '../lib/courses'
 import { eliminarCurso } from '../lib/cursosAdmin'
 
-type Aviso = { tipo: 'success' | 'error'; texto: string }
+export type Aviso = { tipo: 'success' | 'error'; texto: string }
+
+// El formulario vuelve a esta página con el aviso de "curso creado" o "cambios
+// guardados" en el state de la navegación
+function avisoDeNavegacion(state: unknown): Aviso | null {
+  if (typeof state === 'object' && state !== null && 'aviso' in state) {
+    return state.aviso as Aviso
+  }
+  return null
+}
 
 // Se elige el texto del error según su tipo:
 function mensajeError(error: unknown) {
@@ -26,8 +36,16 @@ function AdminCourses() {
   // El curso que se está por eliminar. Mientras no sea null, el diálogo queda abierto
   const [aEliminar, setAEliminar] = useState<Course | null>(null)
   const [eliminando, setEliminando] = useState(false)
-  const [aviso, setAviso] = useState<Aviso | null>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const [aviso, setAviso] = useState<Aviso | null>(() => avisoDeNavegacion(location.state))
   const avisoRef = useRef<HTMLDivElement>(null)
+
+  // Se borra el aviso del historial apenas se lee, así no vuelve a salir al
+  // recargar la página
+  useEffect(() => {
+    if (location.state) navigate(location.pathname, { replace: true, state: null })
+  }, [location.state, location.pathname, navigate])
 
   // La fila borrada se lleva el botón que tenía el focus, así que se pasa al aviso
   // para que no quede perdido en la página

@@ -50,6 +50,7 @@ function Catalog() {
       })
       .catch((error: unknown) => {
         if (controlador.signal.aborted) return
+        console.error('No se pudo cargar el catálogo:', error)
         setResultado({ estado: 'error', cursos: [], error })
       })
     return () => controlador.abort()
