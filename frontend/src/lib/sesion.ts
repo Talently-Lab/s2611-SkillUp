@@ -20,6 +20,14 @@ const sesionSchema = z.object({
 export type Usuario = z.infer<typeof usuarioSchema>
 export type Rol = Usuario['rol']
 export type Sesion = z.infer<typeof sesionSchema>
+
+// Panel de cada rol: a dónde va al iniciar sesión o si entra a una ruta de otro
+// rol. Tiene que ser una ruta que ese rol tenga permitida, o RutaProtegida
+// redirigiría en loop.
+export function rutaInicioPorRol(rol: Rol) {
+  return rol === 'admin' ? '/admin' : '/mis-cursos'
+}
+
 // Por qué se cerró la sesión. 'manual' es cerrarSesion(); 'expirada', un JWT
 // vencido o un 401 a un pedido con sesión. null cuando no hay motivo que
 // mostrar (por ejemplo, una sesión guardada que estaba corrupta).
