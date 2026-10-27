@@ -8,7 +8,7 @@ import Input from '../components/ui/Input'
 import { useAuth } from '../hooks/useAuth'
 import { useAuthForm } from '../hooks/useAuthForm'
 import { useTitulo } from '../hooks/useTitulo'
-import { pedir } from '../lib/apiClient'
+import { MENSAJE_DEMASIADOS_INTENTOS, pedir } from '../lib/apiClient'
 import { usuarioSchema } from '../lib/sesion'
 import { loginSchema, type LoginDatos } from '../lib/validaciones'
 
@@ -53,7 +53,10 @@ function Login() {
   const { errores, errorGeneral, enviando, alertRef, handleSubmit } = useAuthForm(
     loginSchema,
     entrar,
-    { 401: 'El correo o la contraseña no coinciden. Revisá de nuevo y volvé a intentar.' },
+    {
+      401: 'El correo o la contraseña no coinciden. Revisá de nuevo y volvé a intentar.',
+      429: MENSAJE_DEMASIADOS_INTENTOS,
+    },
   )
 
   return (

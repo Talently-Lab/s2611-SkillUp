@@ -6,18 +6,21 @@ import FormField from '../components/ui/FormField'
 import Input from '../components/ui/Input'
 import { useAuthForm } from '../hooks/useAuthForm'
 import { useTitulo } from '../hooks/useTitulo'
-import { pedir } from '../lib/apiClient'
+import { MENSAJE_DEMASIADOS_INTENTOS, pedir } from '../lib/apiClient'
 import { registroSchema, type RegistroDatos } from '../lib/validaciones'
 
 function Register() {
   useTitulo('Crear cuenta')
   const navigate = useNavigate()
 
-  async function registrarse({ correo, contrasenia }: RegistroDatos) {
-    // La ruta y los nombres de campo son los del backend actual (rama
-    // feat/backend-auth-register), que difieren del contrato. Responde 201 sin
-    // token, así que el usuario sigue en el login.
-    await pedir('/api/auth/register', { metodo: 'POST', cuerpo: { correo, contrasenia } })
+  async function registrarse({ nombre, correo, contrasenia }: RegistroDatos) {
+    // La ruta y los nombres de campo son los del backend actual, que difieren
+    // del contrato. El apellido es opcional en el backend y no lo pedimos.
+    // Responde 201 sin token, así que el usuario sigue en el login.
+    await pedir('/api/auth/register', {
+      metodo: 'POST',
+      cuerpo: { nombre, correo, contrasenia },
+    })
     navigate('/login', { state: { registro: { correo } } })
   }
 
@@ -26,6 +29,7 @@ function Register() {
     registrarse,
     {
       409: 'Este correo ya tiene una cuenta activa. ¿Será que ya te registraste antes? Probá iniciando sesión.',
+      429: MENSAJE_DEMASIADOS_INTENTOS,
     },
   )
 
@@ -36,6 +40,10 @@ function Register() {
     >
       <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-5">
         {errorGeneral && <Alert ref={alertRef}>{errorGeneral}</Alert>}
+
+        <FormField label="¿Cómo te llamás?" error={errores.nombre} required>
+          <Input name="nombre" autoComplete="given-name" />
+        </FormField>
 
         <FormField label="Tu correo principal" error={errores.correo} required>
           <Input name="correo" type="email" autoComplete="email" />
