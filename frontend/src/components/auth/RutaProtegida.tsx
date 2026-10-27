@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import type { Rol } from '../../lib/sesion'
+import { rutaInicioPorRol, type Rol } from '../../lib/sesion'
 
 type RutaProtegidaProps = {
   // Sin roles alcanza con tener sesión
@@ -22,7 +22,7 @@ function RutaProtegida({ roles }: RutaProtegidaProps) {
   }
 
   if (roles && !roles.includes(usuario.rol)) {
-    return <Navigate to="/" replace />
+    return <Navigate to={rutaInicioPorRol(usuario.rol)} replace />
   }
 
   return <Outlet />

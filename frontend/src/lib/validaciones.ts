@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const MENSAJES = {
   vacio: 'Nos falta este dato para poder avanzar.',
   correo: 'Ese correo no parece válido. Revisalo y probá de nuevo.',
-  contrasenaCorta: 'La contraseña necesita al menos 8 caracteres.',
+  contrasenaCorta: 'Para que tu cuenta pueda estar segura, tu contraseña tiene que tener al menos 8 caracteres.',
   nombreCorto: 'El nombre necesita al menos 2 caracteres.',
   nombreLargo: 'El nombre puede tener hasta 50 caracteres. Probá con una versión más corta.',
 }
