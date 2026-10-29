@@ -147,8 +147,7 @@ function BotonAlumno({ courseId }: EnrollButtonProps) {
       <Button
         size="lg"
         onClick={inscribir}
-        loading={estado === 'inscribiendo'}
-        disabled={estado === 'consultando'}
+        loading={estado === 'consultando' || estado === 'inscribiendo'}
       >
         Inscribirme
       </Button>
