@@ -34,5 +34,7 @@ export type UsuarioApi = z.input<typeof usuarioSchema>
 
 export async function obtenerUsuarios(signal?: AbortSignal) {
   const datos = await pedir('/api/admin/users', { signal })
-  return validar(usuariosSchema, datos, 'GET /api/admin/users').datos
+  return validar(usuariosSchema, datos, 'GET /api/admin/users').datos.sort(
+    (a, b) => Date.parse(b.fechaRegistro) - Date.parse(a.fechaRegistro),
+  )
 }
