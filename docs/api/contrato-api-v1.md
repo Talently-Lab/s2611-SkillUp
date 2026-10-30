@@ -354,9 +354,20 @@ las clases y cuáles están terminadas:
 
 Si no está inscripto, `403`.
 
+**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
+y, hasta que el backend la implemente, la responde el mock de MSW. Contra el
+backend real hoy da `404`, y el frontend lo muestra como un curso sin clases
+cargadas.
+
 ### `POST /api/progreso`
 
 Envía `{ "id_clase": 101 }`. Marca la clase como completada.
+
+**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
+y, hasta que el backend la implemente, la responde el mock de MSW.
+
+**A confirmar:** qué devuelve. El frontend no lee la respuesta: con un `2xx` da
+la clase por vista.
 
 **Propuesto:** como `PROGRESO_CLASES` apunta a la inscripción, que el backend la busque a partir del
 usuario del token y del curso de la clase. El frontend no necesita mandar
