@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import CatalogCardFooter from '../components/course/CatalogCardFooter'
 import CourseCard from '../components/course/CourseCard'
+import CourseFilters, { type Filtros } from '../components/course/CourseFilters'
 import CourseGrid from '../components/course/CourseGrid'
 import Alert from '../components/ui/Alert'
 import Button from '../components/ui/Button'
@@ -15,6 +17,11 @@ type Resultado =
   | { estado: 'error'; cursos: Course[]; error: unknown }
 
 const CARGANDO: Resultado = { estado: 'cargando', cursos: [], error: null }
+
+// saco tildes y mayúsculas para que "diseno" encuentre "Diseño"
+function normalizar(texto: string) {
+  return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+}
 
 // position es el lugar de la tarjeta en la grilla, contando desde 1
 // ocuparemos esto para capturar la posición de la tarjeta en el evento click_course_detail,
@@ -77,10 +84,54 @@ function Catalog() {
     setIntento((n) => n + 1)
   }
 
+  // los filtros viven en la URL para poder compartirlos por link
+  const [params, setParams] = useSearchParams()
+  const filtros: Filtros = {
+    query: params.get('query') ?? '',
+    categoria: params.get('categoria') ?? '',
+    nivel: params.get('nivel') ?? '',
+  }
+
+  const cambiarFiltros = useCallback(
+    (cambios: Partial<Filtros>) => {
+      setParams(
+        (actuales) => {
+          const nuevos = new URLSearchParams(actuales)
+          for (const [clave, valor] of Object.entries(cambios)) {
+            if (valor) nuevos.set(clave, valor)
+            else nuevos.delete(clave)
+          }
+          return nuevos
+        },
+        { replace: true },
+      )
+    },
+    [setParams],
+  )
+
+  const limpiarFiltros = useCallback(() => setParams({}, { replace: true }), [setParams])
+
   const { estado, cursos, error } = resultado
+
+  // las categorías salen de los cursos que llegan, así no quedan opciones vacías
+  const categorias = useMemo(
+    () => [...new Set(cursos.map((c) => c.categoria).filter((c): c is string => Boolean(c)))].sort(),
+    [cursos],
+  )
+
+  // el back todavía no filtra, así que lo hago acá con la lista completa desde el front:
+  const busqueda = normalizar(filtros.query.trim())
+  const filtrados = cursos.filter(
+    (c) =>
+      (!filtros.categoria || c.categoria === filtros.categoria) &&
+      (!filtros.nivel || c.nivel === filtros.nivel) &&
+      (!busqueda || normalizar(`${c.titulo} ${c.resumen}`).includes(busqueda)),
+  )
+  const hayFiltros = Boolean(filtros.query || filtros.categoria || filtros.nivel)
+
   const titulo =
     estado === 'listo'
-      ? `${cursos.length} ${cursos.length === 1 ? 'curso disponible' : 'cursos disponibles'}`
+      ? `${filtrados.length} ${filtrados.length === 1 ? 'curso disponible' : 'cursos disponibles'}`
       : 'Cursos disponibles'
 
   return (
@@ -96,6 +147,13 @@ function Catalog() {
           Contenidos actualizados con proyectos para tu portfolio
         </p>
       </header>
+
+      <CourseFilters
+        filtros={filtros}
+        categorias={categorias}
+        onCambiar={cambiarFiltros}
+        onLimpiar={limpiarFiltros}
+      />
 
       {estado === 'error' ? (
         <div className="flex max-w-xl flex-col items-start gap-4">
@@ -119,9 +177,15 @@ function Catalog() {
           )}
           <CourseGrid
             isLoading={estado === 'cargando'}
-            isEmpty={estado === 'listo' && cursos.length === 0}
+            isEmpty={estado === 'listo' && filtrados.length === 0}
+            // TODO: Texto provisorio, hay que confirmar con Marketing
+            emptyMessage={
+              hayFiltros
+                ? 'Probá con otra palabra o sacá algún filtro.'
+                : 'Todavía no hay cursos para mostrar.'
+            }
           >
-            {cursos.map(renderCourseCard)}
+            {filtrados.map(renderCourseCard)}
           </CourseGrid>
         </>
       )}
