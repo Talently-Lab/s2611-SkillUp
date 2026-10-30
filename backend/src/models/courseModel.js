@@ -22,7 +22,27 @@ const obtenerTodos = async () => {
   const { rows } = await db.query(query);
   return rows;
 };
-
+// Listar TODOS los cursos (incluyendo borradores) para el panel de Admin
+const obtenerTodosAdmin = async () => {
+  const query = `
+    SELECT 
+      c.id,
+      c.titulo,
+      c.slug,
+      c.categoria,
+      c.nivel,
+      c.resumen,
+      c.url_portada AS imagen,
+      c.publicado, -- Importante para que el frontend sepa si está publicado o borrador
+      COUNT(cl.id)::int AS cantidad_clases
+    FROM cursos c
+    LEFT JOIN clases cl ON cl.id_curso = c.id
+    GROUP BY c.id
+    ORDER BY c.creado_en DESC;
+  `;
+  const { rows } = await db.query(query);
+  return rows;
+};
 // Obtener un curso por ID numérico o por Slug
 const obtenerPorId = async (identificador) => {
   // Comprueba si contiene únicamente números (ej: "1") o si es un slug (ej: "nodejs-express-desde-cero")
@@ -94,6 +114,7 @@ const eliminar = async (id) => {
 
 module.exports = {
   obtenerTodos,
+  obtenerTodosAdmin,
   obtenerPorId,
   crear,
   actualizar,

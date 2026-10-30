@@ -21,6 +21,7 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+
 const getAllEnrollments = async (req, res) => {
     try {
         const inscripciones = await enrollmentModel.getAllEnrollments();
