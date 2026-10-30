@@ -11,7 +11,7 @@ function Navbar() {
   const { usuario, cerrarSesion } = useAuth()
   const navigate = useNavigate()
 
-  // Si se está en una ruta protegida (/perfil, /mis-cursos), RutaProtegida
+  // Si se está en una ruta protegida (/mis-cursos), RutaProtegida
   // renderiza antes que esta navegación y es la que lleva al inicio, porque
   // motivoCierre es 'manual'. Esta navegación cubre las rutas públicas.
   function salir() {
@@ -49,14 +49,9 @@ function Navbar() {
         )}
 
         {usuario?.rol === 'alumno' && (
-          <>
-            <NavLink to="/mis-cursos" className={claseLink}>
-              Mis cursos
-            </NavLink>
-            <NavLink to="/perfil" className={claseLink}>
-              Perfil
-            </NavLink>
-          </>
+          <NavLink to="/mis-cursos" className={claseLink}>
+            Mis cursos
+          </NavLink>
         )}
 
         {usuario?.rol === 'admin' && (

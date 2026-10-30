@@ -88,6 +88,8 @@ contrato (ver pendientes).
 Registro simplificado, como pide UX: solo correo y contraseña. Los datos
 personales se completan después desde el perfil.
 
+> **Nota:** la página de perfil se cortó del MVP.
+
 Envía:
 
 ```json
@@ -417,7 +419,8 @@ tiene ese campo.
 7. Pasar la ruta de registro de `/register` a `/registro`.
 8. Si el registro devuelve token para que el usuario quede logueado.
 9. El nombre y los datos personales se completan desde el perfil
-   (`PUT /api/mi-perfil`), no en el registro.
+   (`PUT /api/mi-perfil`), no en el registro. **Nota:** la página de perfil
+   se cortó del MVP.
 10. Si se adopta el formato de error con `campos`.
 11. Cómo se modela el instructor del curso.
 12. Cómo se guarda la duración del curso.
