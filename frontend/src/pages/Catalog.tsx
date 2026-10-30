@@ -6,6 +6,7 @@ import Alert from '../components/ui/Alert'
 import Button from '../components/ui/Button'
 import { useTitulo } from '../hooks/useTitulo'
 import { ApiError, MENSAJE_GENERICO, MENSAJE_SIN_CONEXION } from '../lib/apiClient'
+import { datosDeCurso, registrarEvento, registrarVistaUnaVez } from '../lib/analytics'
 import { obtenerCursos, type Course } from '../lib/courses'
 
 type Resultado =
@@ -15,7 +16,10 @@ type Resultado =
 
 const CARGANDO: Resultado = { estado: 'cargando', cursos: [], error: null }
 
-function renderCourseCard(course: Course) {
+// position es el lugar de la tarjeta en la grilla, contando desde 1
+// ocuparemos esto para capturar la posición de la tarjeta en el evento click_course_detail,
+//  según la matriz de Data definida en semanas anteriores.
+function renderCourseCard(course: Course, indice: number) {
   return (
     <CourseCard
       key={course.slug}
@@ -30,6 +34,13 @@ function renderCourseCard(course: Course) {
           slug={course.slug}
           cantidad_clases={course.cantidad_clases}
           duracion_semanas={course.duracion_semanas}
+          onVerMas={() =>
+            registrarEvento('click_course_detail', {
+              ...datosDeCurso(course),
+              level: course.nivel,
+              position: indice + 1,
+            })
+          }
         />
       }
     />
@@ -40,6 +51,11 @@ function Catalog() {
   useTitulo('Catálogo')
   const [resultado, setResultado] = useState<Resultado>(CARGANDO)
   const [intento, setIntento] = useState(0)
+
+  // GA4: una vez por visita al catálogo
+  useEffect(() => {
+    registrarVistaUnaVez('view_course_list')
+  }, [])
 
   useEffect(() => {
     const controlador = new AbortController()

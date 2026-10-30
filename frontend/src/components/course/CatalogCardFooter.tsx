@@ -4,6 +4,8 @@ type CatalogCardFooterProps = {
   slug: string
   cantidad_clases: number
   duracion_semanas?: number
+  // Avisa el clic en "Ver más", que es lo que usa GA4 en el catálogo!
+  onVerMas?: () => void
 }
 
 const arrowClasses = [
@@ -23,7 +25,7 @@ function Stat({ label, value }: { label: string; value: string }) {
   )
 }
 
-function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas }: CatalogCardFooterProps) {
+function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas, onVerMas }: CatalogCardFooterProps) {
   return (
     <div className="border-t border-ink/10 pt-4">
       <div className="mb-4 flex items-end justify-between gap-4">
@@ -36,28 +38,32 @@ function CatalogCardFooter({ slug, cantidad_clases, duracion_semanas }: CatalogC
         </div>
       </div>
 
-      <Button
-        to={`/cursos/${slug}`}
-        size="lg"
-        fullWidth
-        className="group/btn squircle shadow-sm"
-      >
-        <span className="relative">
-          Ver más
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            className={arrowClasses}
-          >
-            <path d="M3 8h10M9 4l4 4-4 4" />
-          </svg>
-        </span>
-      </Button>
+      {/* El Button con "to" es un link y no recibe onClick: el clic se escucha acá,
+          y Enter sobre el link también dispara este evento */}
+      <div onClick={onVerMas}>
+        <Button
+          to={`/cursos/${slug}`}
+          size="lg"
+          fullWidth
+          className="group/btn squircle shadow-sm"
+        >
+          <span className="relative">
+            Ver más
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className={arrowClasses}
+            >
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </span>
+        </Button>
+      </div>
     </div>
   )
 }
