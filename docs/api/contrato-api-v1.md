@@ -88,6 +88,8 @@ contrato (ver pendientes).
 Registro simplificado, como pide UX: solo correo y contraseña. Los datos
 personales se completan después desde el perfil.
 
+> **Nota:** la página de perfil se cortó del MVP.
+
 Envía:
 
 ```json
@@ -352,9 +354,20 @@ las clases y cuáles están terminadas:
 
 Si no está inscripto, `403`.
 
+**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
+y, hasta que el backend la implemente, la responde el mock de MSW. Contra el
+backend real hoy da `404`, y el frontend lo muestra como un curso sin clases
+cargadas.
+
 ### `POST /api/progreso`
 
 Envía `{ "id_clase": 101 }`. Marca la clase como completada.
+
+**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
+y, hasta que el backend la implemente, la responde el mock de MSW.
+
+**A confirmar:** qué devuelve. El frontend no lee la respuesta: con un `2xx` da
+la clase por vista.
 
 **Propuesto:** como `PROGRESO_CLASES` apunta a la inscripción, que el backend la busque a partir del
 usuario del token y del curso de la clase. El frontend no necesita mandar
@@ -417,7 +430,8 @@ tiene ese campo.
 7. Pasar la ruta de registro de `/register` a `/registro`.
 8. Si el registro devuelve token para que el usuario quede logueado.
 9. El nombre y los datos personales se completan desde el perfil
-   (`PUT /api/mi-perfil`), no en el registro.
+   (`PUT /api/mi-perfil`), no en el registro. **Nota:** la página de perfil
+   se cortó del MVP.
 10. Si se adopta el formato de error con `campos`.
 11. Cómo se modela el instructor del curso.
 12. Cómo se guarda la duración del curso.

@@ -6,7 +6,6 @@ import Catalog from './pages/Catalog'
 import CourseDetail from './pages/CourseDetail'
 import Dashboard from './pages/Dashboard'
 import EnrolledCourse from './pages/EnrolledCourse'
-import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import Login from './pages/Login'
 import Register from './pages/Register'
@@ -32,7 +31,6 @@ export const router = createBrowserRouter([
         children: [
           { path: 'mis-cursos', element: <Dashboard /> },
           { path: 'mis-cursos/:slug', element: <EnrolledCourse /> },
-          { path: 'perfil', element: <Profile /> },
         ],
       },
       { path: 'ui', element: <UiKit /> },

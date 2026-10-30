@@ -20,7 +20,7 @@ que rebotar igual.
 | `/registro` | Registro | Pública | Alta solo de rol alumno. El admin se crea por seed en el back. |
 | `/mis-cursos` | Dashboard alumno | Alumno | Entregable obligatorio del rol. |
 | `/mis-cursos/:slug` | Curso inscripto | Alumno | Listado de clases. Sin video, según alcance del MVP. |
-| `/perfil` | Perfil | Alumno | Datos básicos y cerrar sesión. Cortable si falta tiempo. |
+| `/perfil` | Perfil | Alumno | Datos básicos y cerrar sesión. Cortable si falta tiempo. **Cortada del MVP.** |
 | `/admin` | Redirección | Admin | Manda a `/admin/cursos`. |
 | `/admin/cursos` | Listado admin | Admin | Tabla con crear, editar y borrar. |
 | `/admin/cursos/nuevo` | Alta de curso | Admin | Mismo componente que la edición, sin valores iniciales. |
@@ -144,7 +144,7 @@ Tres esqueletos distintos, no uno con condicionales.
 | Navbar | P0 | uno solo que cambia según sesión y rol. No tres navbars |
 | AuthLayout | P1 | centrado, sin navegación. Login y registro |
 | AdminLayout | P1 | tabs entre cursos y usuarios. Tabs, no sidebar: menos código |
-| UserMenu | P1 | avatar, perfil y cerrar sesión |
+| UserMenu | P1 | avatar y cerrar sesión |
 | Footer | P2 | links y marca |
 
 ### Dominio (11)
