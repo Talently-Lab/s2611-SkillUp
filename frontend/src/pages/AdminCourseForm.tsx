@@ -166,11 +166,7 @@ function FormularioCurso({ curso }: { curso: Course | null }) {
     : 'inicial'
 
   async function guardar(datos: CursoFormDatos) {
-    // Al crear no se manda publicado porque el backend lo ignora (cursosAdmin.ts)
-    const { publicado, ...sinPublicado } = datos
-    const guardado = curso
-      ? await actualizarCurso(curso.id, { ...sinPublicado, publicado })
-      : await crearCurso(sinPublicado)
+    const guardado = curso ? await actualizarCurso(curso.id, datos) : await crearCurso(datos)
 
     // El de crear es el texto de Marketing de la semana 4.
     // TODO: El de editar es texto provisorio, hay que confirmar con Marketing
@@ -192,6 +188,8 @@ function FormularioCurso({ curso }: { curso: Course | null }) {
       // TODO: Textos provisorios, hay que confirmar con Marketing
       403: 'Tu cuenta no tiene permiso para administrar cursos.',
       404: 'Este curso ya no existe. Puede que lo hayan eliminado.',
+      // TODO: El back todavía responde 500 con un slug repetido, debe retornar 409
+      409: 'Ya existe un curso con ese slug. Probá con otro.',
     },
   )
 
@@ -276,22 +274,11 @@ function FormularioCurso({ curso }: { curso: Course | null }) {
         />
       </FormField>
 
-      {esEdicion ? (
-        <label className="flex items-center gap-3 text-sm font-semibold">
-          <input
-            type="checkbox"
-            name="publicado"
-            defaultChecked={curso.publicado !== false}
-            className="size-5 cursor-pointer accent-primary"
-          />
-          Publicado (visible en el catálogo)
-        </label>
-      ) : (
-        // El backend publica todo curso nuevo, así que acá no se ofrece elegir
+      {/* Ahora no tenemos check de publicado, un curso en el borrador desaparece de la table porque 
+      el back sólo trae los cursos publicados (no tiene sentido volver a publicarlo). Vuelve cuando haya lista para admin. */}
+      {!esEdicion && (
         // TODO: Texto provisorio, hay que confirmar con Marketing
-        <p className="text-sm text-ink/70">
-          Al crearlo, el curso queda publicado en el catálogo. Podés pasarlo a borrador editándolo.
-        </p>
+        <p className="text-sm text-ink/70">Al crearlo, el curso queda publicado en el catálogo.</p>
       )}
 
       <div className="mt-2 flex flex-col gap-3 sm:flex-row">

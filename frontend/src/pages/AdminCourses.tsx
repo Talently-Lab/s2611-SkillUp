@@ -118,7 +118,7 @@ function AdminCourses() {
       <ConfirmDialog
         open={aEliminar !== null}
         titulo="¿Eliminar este curso?"
-        mensaje={`Vas a eliminar «${aEliminar?.titulo ?? ''}». Esta acción no se puede deshacer.`}
+        mensaje={`Vas a eliminar «${aEliminar?.titulo ?? ''}» y también las inscripciones de sus alumnos. Esta acción no se puede deshacer.`}
         textoConfirmar="Eliminar"
         variante="peligro"
         cargando={eliminando}

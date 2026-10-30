@@ -38,7 +38,16 @@ export const loginSchema = z.object({
 })
 
 // Valores que acepta el backend según el contrato v1
-export const CATEGORIAS = ['frontend', 'backend', 'devops', 'ciberseguridad', 'datos', 'mobile'] as const
+export const CATEGORIAS = [
+  'frontend',
+  'backend',
+  'devops',
+  'ciberseguridad',
+  'datos',
+  'mobile',
+  'diseño',
+  'marketing',
+] as const
 export const NIVELES = ['inicial', 'intermedio', 'avanzado'] as const
 
 // Formulario de crear y editar curso del panel admin. El backend exige titulo y
@@ -60,11 +69,6 @@ export const cursoSchema = z.object({
     .string()
     .trim()
     .refine((valor) => valor === '' || /^https?:\/\/\S+$/.test(valor), MENSAJES.url),
-  // Un checkbox marcado llega como "on" y sin marcar no llega
-  publicado: z
-    .literal('on')
-    .optional()
-    .transform((valor) => valor === 'on'),
 })
 
 export type RegistroDatos = z.infer<typeof registroSchema>

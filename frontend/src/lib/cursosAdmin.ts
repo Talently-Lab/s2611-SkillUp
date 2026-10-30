@@ -24,8 +24,7 @@ export function obtenerCursosAdmin(signal?: AbortSignal): Promise<Course[]> {
   return obtenerCursos(signal)
 }
 
-// El backend ignora publicado al crear: todo curso nuevo nace publicado. Para
-// dejarlo como borrador hay que editarlo después.
+// El backend ignora publicado al crear: todo curso nuevo nace como publicado!
 
 // Se crea el curso, y se espera asíncronamente a que el backend lo devuelva con todos los campos.
 export async function crearCurso(datos: DatosCurso): Promise<Course> {
