@@ -12,7 +12,7 @@ function claseSeccion({ isActive }: { isActive: boolean }) {
 
 function AdminLayout() {
   return (
-    <div className="flex min-h-dvh flex-col bg-surface">
+    <div className="flex min-h-dvh flex-col overflow-x-hidden bg-surface">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:font-medium focus:text-ink"
@@ -24,7 +24,7 @@ function AdminLayout() {
         <Navbar />
       </header>
 
-      <main id="main-content" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <main id="main-content" className="mx-auto w-full max-w-6xl min-w-0 flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <nav aria-label="Panel de administración" className="mb-8">
           <div className="inline-flex gap-1 rounded-2xl bg-cream p-1">
             <NavLink to="/admin/cursos" className={claseSeccion}>

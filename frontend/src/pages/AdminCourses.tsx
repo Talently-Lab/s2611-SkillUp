@@ -139,7 +139,7 @@ function TablaCursos({ cursos, onEliminar }: TablaCursosProps) {
       role="region"
       aria-label="Cursos del catálogo"
       tabIndex={0}
-      className="overflow-x-auto rounded-2xl border border-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      className="w-full max-w-full overflow-x-auto rounded-2xl border border-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
     >
       <table className="w-full min-w-2xl text-left text-sm">
         <caption className="sr-only">Cursos del catálogo</caption>
