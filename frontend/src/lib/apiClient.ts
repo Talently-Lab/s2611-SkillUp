@@ -43,6 +43,14 @@ const errorPropuestoSchema = z.object({
   }),
 })
 
+// Las rutas de cursos responden sus errores con otra forma: { success, message }.
+// Sin esto, un error de validación del formulario de admin llegaría sin texto y
+// se mostraría el mensaje genérico en vez del motivo real.
+const errorCursosSchema = z.object({
+  success: z.literal(false),
+  message: z.string(),
+})
+
 function aApiError(status: number, cuerpo: unknown) {
   const propuesto = errorPropuestoSchema.safeParse(cuerpo)
   if (propuesto.success) {
@@ -51,6 +59,9 @@ function aApiError(status: number, cuerpo: unknown) {
 
   const actual = errorActualSchema.safeParse(cuerpo)
   if (actual.success) return new ApiError(status, actual.data.mensaje)
+
+  const cursos = errorCursosSchema.safeParse(cuerpo)
+  if (cursos.success) return new ApiError(status, cursos.data.message)
 
   return new ApiError(status, MENSAJE_GENERICO)
 }

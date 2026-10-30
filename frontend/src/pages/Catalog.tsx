@@ -50,6 +50,7 @@ function Catalog() {
       })
       .catch((error: unknown) => {
         if (controlador.signal.aborted) return
+        console.error('No se pudo cargar el catálogo:', error)
         setResultado({ estado: 'error', cursos: [], error })
       })
     return () => controlador.abort()
@@ -92,12 +93,21 @@ function Catalog() {
           </Button>
         </div>
       ) : (
-        <CourseGrid
-          isLoading={estado === 'cargando'}
-          isEmpty={estado === 'listo' && cursos.length === 0}
-        >
-          {cursos.map(renderCourseCard)}
-        </CourseGrid>
+        <>
+          {/* Los skeletons no se leen en el lector de accesibildiad: le avisamos que está cargando con el texto
+          "Cargando cursos" */}
+          {estado === 'cargando' && (
+            <p role="status" className="sr-only">
+              Cargando cursos
+            </p>
+          )}
+          <CourseGrid
+            isLoading={estado === 'cargando'}
+            isEmpty={estado === 'listo' && cursos.length === 0}
+          >
+            {cursos.map(renderCourseCard)}
+          </CourseGrid>
+        </>
       )}
     </>
   )

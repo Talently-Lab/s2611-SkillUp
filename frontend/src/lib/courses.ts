@@ -26,6 +26,7 @@ export type Course = {
   categoria: string | null
   nivel: Nivel
   cantidad_clases: number
+  publicado?: boolean
   // Duración e instructor no están en el contrato v1. Los piden las cards FE-07 
   // y el diseño de UX, así que quedan opcionales hasta que Backend confirme, en el siguiente
   // commit podemos hacerlos obligatorios si se confirma que siempre vienen!
@@ -49,7 +50,7 @@ type CursoCrudo = Omit<Course, 'url_portada' | 'resumen'> & {
   resumen?: string | null
 }
 
-function normalizarCurso(crudo: CursoCrudo): Course {
+export function normalizarCurso(crudo: CursoCrudo): Course {
   const { imagen, url_portada, resumen, ...resto } = crudo
   return {
     ...resto,
@@ -71,7 +72,7 @@ function extraerLista(respuesta: unknown): CursoCrudo[] {
   throw new Error('Respuesta inválida de GET /api/courses')
 }
 
-function extraerDetalle(respuesta: unknown): CursoCrudo {
+export function extraerDetalle(respuesta: unknown): CursoCrudo {
   if (typeof respuesta !== 'object' || respuesta === null) {
     throw new Error('Respuesta inválida del detalle de curso')
   }

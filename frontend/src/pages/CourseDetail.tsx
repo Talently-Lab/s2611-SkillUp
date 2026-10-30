@@ -60,6 +60,9 @@ function ContenidoDetalle({ slug }: { slug: string }) {
           setResultado({ estado: 'noEncontrado', curso: null, error: null })
           return
         }
+        // Igual que en el catálogo, el 404 de arriba no se registra porque es
+        // un curso que no existe, no una falla
+        console.error(`No se pudo cargar el detalle del curso "${slug}":`, error)
         setResultado({ estado: 'error', curso: null, error })
       })
     return () => controlador.abort()
