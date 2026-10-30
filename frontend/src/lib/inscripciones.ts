@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { pedir } from './apiClient'
+import { pedir, validar } from './apiClient'
 
 // Rutas del brief (docs/api/contrato-api-v1.md, "Propuesto (según brief)").
 // Mientras el backend no las tenga, las responde MSW (src/mocks/handlers.ts).
@@ -32,17 +32,6 @@ const misInscripcionesSchema = z.object({
 export type CursoInscripto = z.infer<typeof cursoInscriptoSchema>
 export type Inscripcion = z.infer<typeof inscripcionSchema>
 export type MisInscripciones = z.infer<typeof misInscripcionesSchema>
-
-// Si la respuesta no tiene la forma esperada no es un ApiError a propósito:
-// quien la use muestra el mensaje genérico, igual que en el login.
-function validar<T>(schema: z.ZodType<T>, datos: unknown, ruta: string): T {
-  const resultado = schema.safeParse(datos)
-  if (!resultado.success) {
-    console.error(`La respuesta de ${ruta} no coincide con el contrato:`, resultado.error)
-    throw new Error(`Respuesta inválida de ${ruta}`)
-  }
-  return resultado.data
-}
 
 // 401 sin sesión, 409 si ya estaba inscripto (llegan como ApiError)
 export async function inscribirse(courseId: number) {

@@ -9,9 +9,10 @@ export const MENSAJE_SIN_CONEXION =
 // Texto de Marketing
 export const MENSAJE_GENERICO =
   '¡Ups! Tuvimos un pequeño problema técnico por nuestro lado. Danos unos minutos y volvé a intentar.'
-// 429 del rate limit de login y registro. Texto provisorio: confirmar con Marketing
+// 429 del rate limit de login y registro. Texto de Marketing: su "Vuelve" pasó
+// a "Volvé" por el voseo del sitio
 export const MENSAJE_DEMASIADOS_INTENTOS =
-  'Hiciste muchos intentos seguidos. Esperá un minuto y volvé a intentar.'
+  'Demasiados intentos fallidos. Por tu seguridad, bloqueamos el acceso por unos minutos. ¡Volvé a intentar más tarde!'
 
 export class ApiError extends Error {
   // 0 cuando el servidor no respondió
@@ -121,6 +122,17 @@ export async function pedir<T>(ruta: string, { metodo = 'GET', cuerpo, signal }:
   }
 
   return datos as T
+}
+
+// Si la respuesta no tiene la forma esperada no es un ApiError a propósito:
+// quien la use muestra el mensaje genérico, igual que en el login.
+export function validar<T>(schema: z.ZodType<T>, datos: unknown, ruta: string): T {
+  const resultado = schema.safeParse(datos)
+  if (!resultado.success) {
+    console.error(`La respuesta de ${ruta} no coincide con el contrato:`, resultado.error)
+    throw new Error(`Respuesta inválida de ${ruta}`)
+  }
+  return resultado.data
 }
 
 // Un 204 o un error de un proxy pueden venir vacíos o en HTML: en esos casos

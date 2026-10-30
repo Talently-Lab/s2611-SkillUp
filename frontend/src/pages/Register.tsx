@@ -28,6 +28,8 @@ function Register() {
     registroSchema,
     registrarse,
     {
+      // Texto provisorio: confirmar con Marketing
+      400: 'Revisá los datos que completaste y volvé a intentar.',
       409: 'Este correo ya tiene una cuenta activa. ¿Será que ya te registraste antes? Probá iniciando sesión.',
       429: MENSAJE_DEMASIADOS_INTENTOS,
     },
