@@ -134,79 +134,134 @@ type TablaCursosProps = {
 
 function TablaCursos({ cursos, onEliminar }: TablaCursosProps) {
   return (
-    // Necesita 'Focusable' para poder scrollear la tabla con el teclado en mobile también
-    <div
-      role="region"
-      aria-label="Cursos del catálogo"
-      tabIndex={0}
-      className="overflow-x-auto rounded-2xl border border-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
-    >
-      <table className="w-full min-w-2xl text-left text-sm">
-        <caption className="sr-only">Cursos del catálogo</caption>
-        <thead className="bg-cream">
-          <tr>
-            <th scope="col" className="min-w-56 px-4 py-3 font-semibold">
-              Curso
-            </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
-              Categoría
-            </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
-              Nivel
-            </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
-              Clases
-            </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
-              Estado
-            </th>
-            <th scope="col" className="px-4 py-3 font-semibold">
-              <span className="sr-only">Acciones</span>
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-ink/10">
-          {cursos.map((curso) => (
-            <tr key={curso.id}>
-              <th scope="row" className="px-4 py-3 font-normal">
-                <span className="block font-semibold">{curso.titulo}</span>
-                <span className="block text-xs text-ink/70">/{curso.slug}</span>
+    <>
+      {/* Vista mobile: cada curso como tarjeta vertical (sugerencia de Dani) */}
+      <div className="flex flex-col gap-3 md:hidden">
+        {cursos.map((curso) => (
+          <div
+            key={curso.id}
+            className="rounded-2xl border border-ink/10 bg-surface p-4 shadow-xs"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <h2 className="font-semibold text-ink">{curso.titulo}</h2>
+                <p className="text-xs text-ink/70">/{curso.slug}</p>
+              </div>
+              {curso.publicado === false ? (
+                <Badge>Borrador</Badge>
+              ) : (
+                <Badge tone="success">Publicado</Badge>
+              )}
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-ink/80">
+              {curso.categoria ? (
+                <Badge tone="brand">{curso.categoria}</Badge>
+              ) : (
+                <span className="text-ink/60">Sin categoría</span>
+              )}
+              <span className="text-ink/30">•</span>
+              <span>{nivelLabel[curso.nivel] ?? curso.nivel}</span>
+              <span className="text-ink/30">•</span>
+              <span>{curso.cantidad_clases} clases</span>
+            </div>
+
+            <div className="mt-4 flex gap-2 border-t border-ink/10 pt-3">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="flex-1 justify-center"
+                to={`/admin/cursos/${curso.id}/editar`}
+              >
+                Editar<span className="sr-only"> {curso.titulo}</span>
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                className="flex-1 justify-center"
+                onClick={() => onEliminar(curso)}
+              >
+                Eliminar<span className="sr-only"> {curso.titulo}</span>
+              </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Vista desktop: tabla completa */}
+      <div
+        role="region"
+        aria-label="Cursos del catálogo"
+        tabIndex={0}
+        className="hidden w-full max-w-full overflow-x-auto rounded-2xl border border-ink/10 md:block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      >
+        <table className="w-full min-w-2xl text-left text-sm">
+          <caption className="sr-only">Cursos del catálogo</caption>
+          <thead className="bg-cream">
+            <tr>
+              <th scope="col" className="min-w-56 px-4 py-3 font-semibold">
+                Curso
               </th>
-              <td className="px-4 py-3">
-                {curso.categoria ? (
-                  <Badge tone="brand">{curso.categoria}</Badge>
-                ) : (
-                  <span className="text-ink/60">Sin categoría</span>
-                )}
-              </td>
-              <td className="px-4 py-3">{nivelLabel[curso.nivel] ?? curso.nivel}</td>
-              <td className="px-4 py-3 tabular-nums">{curso.cantidad_clases}</td>
-              <td className="px-4 py-3">
-                {/* ACtualmente la lista solo trae publicados y sin el campo, por eso
-                    undefined cuenta como publicado. Hay que coordinar con backend. */}
-                {curso.publicado === false ? (
-                  <Badge>Borrador</Badge>
-                ) : (
-                  <Badge tone="success">Publicado</Badge>
-                )}
-              </td>
-              <td className="px-4 py-3">
-                <div className="flex justify-end gap-2">
-                  {/* sr-only: el nombre oculto sirve para el lector de pantalla (accesibilidad),
-                   que si no escucharía "Editar" y "Eliminar" repetidos en cada fila */}
-                  <Button variant="secondary" size="sm" to={`/admin/cursos/${curso.id}/editar`}>
-                    Editar<span className="sr-only"> {curso.titulo}</span>
-                  </Button>
-                  <Button variant="danger" size="sm" onClick={() => onEliminar(curso)}>
-                    Eliminar<span className="sr-only"> {curso.titulo}</span>
-                  </Button>
-                </div>
-              </td>
+              <th scope="col" className="px-4 py-3 font-semibold">
+                Categoría
+              </th>
+              <th scope="col" className="px-4 py-3 font-semibold">
+                Nivel
+              </th>
+              <th scope="col" className="px-4 py-3 font-semibold">
+                Clases
+              </th>
+              <th scope="col" className="px-4 py-3 font-semibold">
+                Estado
+              </th>
+              <th scope="col" className="px-4 py-3 font-semibold">
+                <span className="sr-only">Acciones</span>
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody className="divide-y divide-ink/10">
+            {cursos.map((curso) => (
+              <tr key={curso.id}>
+                <th scope="row" className="px-4 py-3 font-normal">
+                  <span className="block font-semibold">{curso.titulo}</span>
+                  <span className="block text-xs text-ink/70">/{curso.slug}</span>
+                </th>
+                <td className="px-4 py-3">
+                  {curso.categoria ? (
+                    <Badge tone="brand">{curso.categoria}</Badge>
+                  ) : (
+                    <span className="text-ink/60">Sin categoría</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">{nivelLabel[curso.nivel] ?? curso.nivel}</td>
+                <td className="px-4 py-3 tabular-nums">{curso.cantidad_clases}</td>
+                <td className="px-4 py-3">
+                  {/* ACtualmente la lista solo trae publicados y sin el campo, por eso
+                      undefined cuenta como publicado. Hay que coordinar con backend. */}
+                  {curso.publicado === false ? (
+                    <Badge>Borrador</Badge>
+                  ) : (
+                    <Badge tone="success">Publicado</Badge>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  <div className="flex justify-end gap-2">
+                    {/* sr-only: el nombre oculto sirve para el lector de pantalla (accesibilidad),
+                     que si no escucharía "Editar" y "Eliminar" repetidos en cada fila */}
+                    <Button variant="secondary" size="sm" to={`/admin/cursos/${curso.id}/editar`}>
+                      Editar<span className="sr-only"> {curso.titulo}</span>
+                    </Button>
+                    <Button variant="danger" size="sm" onClick={() => onEliminar(curso)}>
+                      Eliminar<span className="sr-only"> {curso.titulo}</span>
+                    </Button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
   )
 }
 
