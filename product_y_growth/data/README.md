@@ -1,4 +1,4 @@
-﻿# Data Analytics
+# Data Analytics
 
 Datasets limpios, definiciones de KPIs y links a Dashboards.
 
@@ -10,3 +10,4 @@ Datasets limpios, definiciones de KPIs y links a Dashboards.
 - [Semana 4 — Eventos del catálogo de cursos](semana-4-eventos-catalogo.md)
 - [Semana 5 — Inscripción: diccionario de datos y Ratio de Interés](semana-5-inscripcion-cursos.md)
 - [Semana 6 — Métricas generales del Panel Admin](semana-6-metricas-panel-admin.md)
+- [Semana 7 — QA de Telemetría y Certificación de Datos](semana-7-qa-telemetria.md)
