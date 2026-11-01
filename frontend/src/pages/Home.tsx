@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import heroImage from '../assets/auth.webp'
 import CatalogCardFooter from '../components/course/CatalogCardFooter'
 import CourseCard from '../components/course/CourseCard'
 import CourseCardSkeleton from '../components/course/CourseCardSkeleton'
@@ -108,6 +109,16 @@ function Hero() {
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-28 -left-20 -z-10 size-72 rounded-full bg-primary-soft/30 blur-3xl"
       />
+      {/* Decorativa y solo desde lg: con lazy, en celular (oculta) no se descarga. La máscara
+          la deja transparente en el tramo donde llega el texto y la funde hacia la derecha. */}
+      <img
+        src={heroImage}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden h-full w-1/2 scale-105 object-cover object-[65%_30%] opacity-60 blur-[1px] [mask-image:linear-gradient(to_right,transparent_35%,black_85%)] lg:block"
+      />
 
       <div className="grid items-center gap-10 lg:grid-cols-[1fr_auto]">
         <div className="max-w-2xl">
@@ -133,7 +144,7 @@ function Hero() {
 
         <div
           aria-hidden="true"
-          className="squircle hidden w-72 rotate-2 rounded-2xl border border-ink/10 bg-surface p-6 shadow-sm lg:block"
+          className="squircle hidden w-72 rotate-2 rounded-2xl border border-white/40 bg-cream/90 p-6 shadow-lg backdrop-blur-md lg:block"
         >
           <ul className="flex flex-col gap-4">
             {BENEFICIOS.map((beneficio) => (
