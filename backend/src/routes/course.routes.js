@@ -4,6 +4,7 @@ const router = express.Router();
 
 const {
   getAllCourses,
+  getAllCoursesAdmin,
   getCourseById,
   createCourse,
   updateCourse,
@@ -14,11 +15,14 @@ const {
 const authMiddleware = require('../middlewares/auth');
 const verifyAdmin = require('../middlewares/auth.middleware');
 
-// Rutas públicas (cualquiera puede ver el catálogo)
+// 1. Rutas específicas de Admin (¡OJO: ARRIBA de /:id para que no choquen!)
+router.get('/admin/todos', authMiddleware, verifyAdmin, getAllCoursesAdmin);
+
+// 2. Rutas públicas (cualquiera puede ver el catálogo o un curso puntual)
 router.get('/', getAllCourses);
 router.get('/:id', getCourseById);
 
-// Rutas protegidas (Requiere Login + Rol de Administrador)
+// 3. Rutas protegidas de escritura (Requieren Login + Rol de Administrador)
 router.post('/', authMiddleware, verifyAdmin, createCourse);
 router.put('/:id', authMiddleware, verifyAdmin, updateCourse);
 router.delete('/:id', authMiddleware, verifyAdmin, deleteCourse);
