@@ -2,6 +2,8 @@
 
 > Sistema integral desarrollado en el marco de la simulación laboral de SkillUp.
 
+**Sitio:** https://skillup-campus.vercel.app · **Frontend:** [frontend/README.md](frontend/README.md)
+
 ---
 
 ## 👥 Integrantes del Equipo
@@ -49,3 +51,4 @@ skillup-workspace/
 ├── docs/                     # Documentación general (PM, QA, Postman)
 ├── product_y_growth/         # Marketing, Data y Diseño (Manual de marca)
 └── README.md                 # Documentación principal
+```
