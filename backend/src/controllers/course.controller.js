@@ -153,7 +153,7 @@ const deleteCourse = async (req, res) => {
     });
   } catch (error) {
     console.error('Error en deleteCourse:', error);
-    return res.status(409).json({ success: false, message: 'Error al eliminar el curso' });
+    return res.status(500).json({ success: false, message: 'Error al eliminar el curso' });
   }
 };
 
