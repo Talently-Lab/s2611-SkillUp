@@ -37,7 +37,7 @@
       "response": []
     },
     {
-      "name": "http://localhost:4000/api/auth/register",
+      "name": "POST Registro",
       "request": {
         "method": "POST",
         "header": [],
@@ -124,14 +124,6 @@
             "login"
           ]
         }
-      },
-      "response": []
-    },
-    {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": []
       },
       "response": []
     },

@@ -4,6 +4,7 @@ const cors = require('cors');
 const db = require('./config/db');
 
 // 1. Importar rutas y middlewares
+const studentRoutes = require('./routes/studentRoutes');
 const authRoutes = require('./routes/authRoutes');
 const courseRoutes = require('./routes/course.routes');
 const enrollmentRoutes = require('./routes/enrollmentRoutes');
@@ -68,6 +69,7 @@ app.get('/api/salud-db', async (req, res) => {
 });
 
 // 5. Montar rutas de la API
+app.use('/api', studentRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
