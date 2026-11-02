@@ -41,7 +41,10 @@ const validateRegister = [
     .withMessage('El correo electrónico es obligatorio')
     .isEmail()
     .withMessage('Debe ingresar un formato de correo electrónico válido')
-    .normalizeEmail(),
+    .normalizeEmail({
+      gmail_remove_dots: false,
+      gmail_remove_subaddress: false
+    }),
 
   // 3. Contraseña mínima de 8 caracteres
   body('contrasenia')

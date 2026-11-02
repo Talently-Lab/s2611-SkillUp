@@ -74,7 +74,7 @@ const buscarPorCorreo = async (correo) => {
       p.apellido
     FROM usuarios u
     LEFT JOIN personas p ON p.id_usuario = u.id
-    WHERE u.correo = $1;
+    WHERE LOWER(u.correo) = LOWER($1);
   `;
   const { rows } = await db.query(query, [correo]);
   return rows[0];

@@ -1,0 +1,111 @@
+{
+  "info": {
+    "_postman_id": "8451a310-031b-4c34-ae61-113e996cbee6",
+    "name": "SkillUp Campus - Student Panel",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "31766422"
+  },
+  "item": [
+    {
+      "name": "GET Mis Clases - 200 Exitoso",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInJvbGUiOiJhbHVtbm8iLCJpYXQiOjE3OTM1NzMxNTgsImV4cCI6MTc5MzY1OTU1OH0.8btP7BhJ4_SeJoLk3DSFOCso99X23Z8qZntcQNhXRK4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/mis-cursos/nodejs-express-desde-cero",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "mis-cursos",
+            "nodejs-express-desde-cero"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET Mis Clases - 404 No Inscripto o Inexistente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInJvbGUiOiJhbHVtbm8iLCJpYXQiOjE3OTM1NzMxNTgsImV4cCI6MTc5MzY1OTU1OH0.8btP7BhJ4_SeJoLk3DSFOCso99X23Z8qZntcQNhXRK4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:4000/api/mis-cursos/postgresql-docker-desde-cero",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "mis-cursos",
+            "postgresql-docker-desde-cero"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST Progreso - 200 Marcar Vista",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsInJvbGUiOiJhbHVtbm8iLCJpYXQiOjE3OTM1NzMxNTgsImV4cCI6MTc5MzY1OTU1OH0.8btP7BhJ4_SeJoLk3DSFOCso99X23Z8qZntcQNhXRK4",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"id_clase\": 1}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:4000/api/progreso",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "4000",
+          "path": [
+            "api",
+            "progreso"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

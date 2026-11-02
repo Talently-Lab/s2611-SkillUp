@@ -54,18 +54,22 @@ const register = async (req, res) => {
 // Login con JWT
 const login = async (req, res) => {
   try {
-    const correo = req.body.email || req.body.correo;
+    const rawCorreo = req.body.email || req.body.correo;
     const contrasenia = req.body.password || req.body.contrasenia;
 
-    if (!correo || !contrasenia) {
+    if (!rawCorreo || !contrasenia) {
       return res.status(400).json({
         error: 'Datos incompletos',
         mensaje: 'El correo y la contraseña son obligatorios',
       });
     }
 
+    // quita espacios y pasa a minúsculas sin alterar puntos
+    const correo = rawCorreo.trim().toLowerCase();
+
     // Buscar usuario en la base de datos (incluyendo personas vía LEFT JOIN)
     const usuario = await userModel.buscarPorCorreo(correo);
+    
     if (!usuario) {
       return res.status(401).json({
         error: 'Credenciales inválidas',

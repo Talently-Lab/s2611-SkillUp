@@ -112,10 +112,13 @@ const eliminar = async (id) => {
   return rows[0];
 };
 
-const verificarAlumnosInscriptos = async (id) => {
-  const query = 'SELECT COUNT(*) AS cantidad FROM inscripciones WHERE id_curso = $1';
-  const { rows } = await db.query(query, [id]);
-  return parseInt(rows[0].cantidad) > 0;
+// Verifica si un curso tiene alumnos inscriptos
+const verificarAlumnosInscriptos = async (idCurso) => {
+  const { rows } = await db.query(
+    'SELECT COUNT(*)::int AS total FROM inscripciones WHERE id_curso = $1',
+    [idCurso]
+  );
+  return rows[0].total > 0;
 };
 
 module.exports = {
@@ -125,5 +128,4 @@ module.exports = {
   crear,
   actualizar,
   eliminar,
-  verificarAlumnosInscriptos
 };
