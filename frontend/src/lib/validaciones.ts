@@ -63,12 +63,21 @@ export const cursoSchema = z.object({
   descripcion: z.string().trim(),
   // '' significa que no tiene categoría. Acepta cualquier texto para no rechazar 
   // una categoría vieja que no está en la lista, la lista solo limita lo que se puede elegir
-  categoria: z.string().trim(),
+  // Sin categoría se manda null: la base no acepta un texto vacío y daba 500
+  categoria: z
+    .string()
+    .trim()
+    .transform((valor) => valor || null),
   nivel: z.enum(NIVELES),
   url_portada: z
     .string()
     .trim()
     .refine((valor) => valor === '' || /^https?:\/\/\S+$/.test(valor), MENSAJES.url),
+  // Un checkbox marcado llega como "on" y sin marcar no llega
+  publicado: z
+    .literal('on')
+    .optional()
+    .transform((valor) => valor === 'on'),
 })
 
 export type RegistroDatos = z.infer<typeof registroSchema>
