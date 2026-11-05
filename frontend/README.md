@@ -15,7 +15,7 @@ Aplicación web de SkillUp Campus: catálogo de cursos de IT, inscripción y seg
 - Registro e inicio de sesión.
 - Inscripción a un curso desde su detalle.
 - Mis cursos: los cursos inscriptos con su barra de progreso.
-- Página del curso con sus clases y progreso; marcar clases como vistas depende de dos endpoints que el backend todavía no tiene (ver Estado y pendientes).
+- Página del curso con sus clases: se pueden abrir, ver su contenido y marcarlas como vistas; la barra de progreso se actualiza al momento.
 
 **Administradores**
 - Cursos: crear, editar y eliminar (con confirmación antes de borrar).
@@ -95,7 +95,6 @@ src/
 
 ## Estado y pendientes
 
-- **Página del curso:** está lista, pero las clases dependen de `GET /api/mis-cursos/:slug` y `POST /api/progreso`, que el backend todavía no implementa. Con los mocks funciona completa; con el backend real muestra el aviso "Las clases de este curso todavía no están cargadas."
 - **Perfil:** se cortó del MVP.
 
 ## Cuentas de prueba
@@ -106,4 +105,4 @@ src/
 ## Equipo de Frontend
 
 - Daniela Homobono · [LinkedIn](https://www.linkedin.com/in/daniela-homobono/)
-- Matías Valenzuela
+- Matías Valenzuela · [LinkedIn](https://www.linkedin.com/in/matiasse/)
