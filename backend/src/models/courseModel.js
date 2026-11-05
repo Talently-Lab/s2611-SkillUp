@@ -128,4 +128,5 @@ module.exports = {
   crear,
   actualizar,
   eliminar,
+  verificarAlumnosInscriptos,
 };

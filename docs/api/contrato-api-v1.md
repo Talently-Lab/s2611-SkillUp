@@ -332,46 +332,65 @@ forma de la respuesta, en el frontend se ajusta solo
 
 ### `GET /api/mis-cursos/:slug`
 
-Requiere token y estar inscripto. Devuelve el curso con el contenido completo de
-las clases y cuáles están terminadas:
+**Implementada.** Requiere token y una inscripción activa en el curso. Devuelve
+el curso con el contenido completo de las clases, ordenadas por `orden`, y
+cuáles están terminadas:
 
 ```json
 {
-  "titulo": "React desde cero",
-  "clases": [
-    {
-      "id": 101,
-      "titulo": "Qué es React",
-      "descripcion": "...",
-      "contenido_texto": "...",
-      "url_externa": "https://...",
-      "orden": 1,
-      "completada": true
-    }
-  ]
+  "curso": {
+    "id": 14,
+    "titulo": "React desde cero",
+    "descripcion": "...",
+    "slug": "react-desde-cero",
+    "clases": [
+      {
+        "id": 101,
+        "titulo": "Qué es React",
+        "orden": 1,
+        "descripcion": "...",
+        "contenido": "...",
+        "url_externa": "https://...",
+        "completada": true
+      }
+    ]
+  }
 }
 ```
 
-Si no está inscripto, `403`.
+El texto de la clase llega como `contenido` (en la tabla es `contenido_texto`).
+`completada` siempre es booleano (sale de un `IS NOT NULL` en la consulta). El
+resto viene directo de la tabla `CLASES`; el frontend acepta `null` en
+`descripcion`, `contenido` y `url_externa`.
 
-**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
-y, hasta que el backend la implemente, la responde el mock de MSW. Contra el
-backend real hoy da `404`, y el frontend lo muestra como un curso sin clases
-cargadas.
+Si no está inscripto o el curso no existe, `404`. El frontend lo muestra como un
+curso sin clases cargadas. La consume `frontend/src/lib/misCursos.ts`.
 
 ### `POST /api/progreso`
 
-Envía `{ "id_clase": 101 }`. Marca la clase como completada.
+**Implementada.** Requiere token. Envía `{ "id_clase": 101 }` y marca la clase
+como completada. Marcarla otra vez solo actualiza la fecha. Devuelve `200`:
 
-**Usada por el frontend con mock.** La consume `frontend/src/lib/misCursos.ts`
-y, hasta que el backend la implemente, la responde el mock de MSW.
+```json
+{
+  "mensaje": "Clase completada con éxito",
+  "progreso": {
+    "id": 530,
+    "id_inscripcion": 88,
+    "id_clase": 101,
+    "completada_en": "2026-11-05T14:30:00Z",
+    "completada": true
+  }
+}
+```
 
-**A confirmar:** qué devuelve. El frontend no lee la respuesta: con un `2xx` da
-la clase por vista.
+Sin `id_clase`, `400`. Si el alumno no tiene una inscripción activa en el curso
+de esa clase (o la clase no existe), `403`. El frontend no lee la respuesta: con
+un `2xx` da la clase por vista.
 
-**Propuesto:** como `PROGRESO_CLASES` apunta a la inscripción, que el backend la busque a partir del
-usuario del token y del curso de la clase. El frontend no necesita mandar
-`id_inscripcion`.
+**Confirmado:** como `PROGRESO_CLASES` apunta a la inscripción, el backend la
+busca a partir del usuario del token y del curso de la clase. El frontend no
+manda `id_inscripcion`.
 
 ---
 

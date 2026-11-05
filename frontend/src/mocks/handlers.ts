@@ -38,35 +38,35 @@ const USUARIOS: UsuarioApi[] = [
 
 // Las mismas para todos los cursos. La primera no tiene url_externa y la
 // segunda sí, así siempre se ven los dos casos.
-const CLASES_DE_EJEMPLO: Pick<ClaseApi, 'titulo' | 'descripcion' | 'contenido_texto' | 'url_externa'>[] = [
+const CLASES_DE_EJEMPLO: Pick<ClaseApi, 'titulo' | 'descripcion' | 'contenido' | 'url_externa'>[] = [
   {
     titulo: 'Bienvenida y presentación del curso',
     descripcion: 'Qué vas a aprender y cómo está organizado el curso.',
-    contenido_texto: 'Te damos la bienvenida.\n\nEn esta clase repasamos los objetivos del curso, cómo se organizan las clases y qué necesitás para empezar.',
+    contenido: 'Te damos la bienvenida.\n\nEn esta clase repasamos los objetivos del curso, cómo se organizan las clases y qué necesitás para empezar.',
     url_externa: null,
   },
   {
     titulo: 'Herramientas que vas a usar',
     descripcion: 'Instalación y configuración del entorno de trabajo.',
-    contenido_texto: 'Antes de arrancar, dejá listo tu entorno:\n1. Un editor de código.\n2. Un navegador actualizado.\n3. Una cuenta para guardar tus proyectos.',
+    contenido: 'Antes de arrancar, dejá listo tu entorno:\n1. Un editor de código.\n2. Un navegador actualizado.\n3. Una cuenta para guardar tus proyectos.',
     url_externa: 'https://developer.mozilla.org/es/',
   },
   {
     titulo: 'Primer ejercicio práctico',
     descripcion: 'Ponés en práctica lo visto con un ejercicio guiado.',
-    contenido_texto: 'Seguí los pasos del enunciado y, cuando termines, compará tu resultado con la solución propuesta.',
+    contenido: 'Seguí los pasos del enunciado y, cuando termines, compará tu resultado con la solución propuesta.',
     url_externa: null,
   },
   {
     titulo: 'Recursos para seguir aprendiendo',
     descripcion: null,
-    contenido_texto: 'Una selección de lecturas y documentación para profundizar por tu cuenta.',
+    contenido: 'Una selección de lecturas y documentación para profundizar por tu cuenta.',
     url_externa: 'https://web.dev/learn',
   },
   {
     titulo: 'Cierre y próximos pasos',
     descripcion: 'Repaso de lo aprendido.',
-    contenido_texto: null,
+    contenido: null,
     url_externa: null,
   },
 ]
@@ -172,7 +172,11 @@ function sinToken() {
 }
 
 function noInscripto() {
-  return error(403, 'Prohibido', 'No estás inscripto/a en este curso.')
+  return error(404, 'No encontrado', 'No estás inscripto en este curso o el curso no existe.')
+}
+
+function sinInscripcionDeLaClase() {
+  return error(403, 'Acceso denegado', 'No tienes una inscripción activa para el curso de esta clase.')
 }
 
 export const handlers = [
@@ -268,7 +272,15 @@ export const handlers = [
       ...clase,
       completada: vistas.includes(clase.id),
     }))
-    return HttpResponse.json({ titulo: curso.titulo, clases })
+    return HttpResponse.json({
+      curso: {
+        id: curso.id,
+        titulo: curso.titulo,
+        descripcion: curso.descripcion ?? null,
+        slug: curso.slug,
+        clases,
+      },
+    })
   }),
 
   http.post(RUTA_PROGRESO, async ({ request }) => {
@@ -282,15 +294,15 @@ export const handlers = [
         ? cuerpo.id_clase
         : undefined
     if (typeof idClase !== 'number') {
-      return error(400, 'Datos incompletos', 'Falta la clase que querés marcar como vista.')
+      return error(400, 'Datos incompletos', 'El id_clase es obligatorio.')
     }
 
+    // Como el backend: una clase que no existe da el mismo 403 que una de un
+    // curso en el que no está inscripto
     const curso = courses.find((c) => clasesDelCurso(c).some((clase) => clase.id === idClase))
-    if (!curso) return error(404, 'No encontrado', 'La clase no existe.')
-
     const inscripciones = leerInscripciones()
-    const inscripcion = activaDelCurso(inscripciones, curso.id)
-    if (!inscripcion) return noInscripto()
+    const inscripcion = curso && activaDelCurso(inscripciones, curso.id)
+    if (!curso || !inscripcion) return sinInscripcionDeLaClase()
 
     // Marcarla dos veces no la cuenta dos veces
     const progreso = leerProgreso()
@@ -307,6 +319,16 @@ export const handlers = [
       )
     }
 
-    return HttpResponse.json({ id_clase: idClase, completada: true })
+    return HttpResponse.json({
+      mensaje: 'Clase completada con éxito',
+      progreso: {
+        // En el backend es el id de la fila de progreso_clases; acá alcanza con uno fijo por par
+        id: inscripcion.id_inscripcion * 1000 + idClase,
+        id_inscripcion: inscripcion.id_inscripcion,
+        id_clase: idClase,
+        completada_en: new Date().toISOString(),
+        completada: true,
+      },
+    })
   }),
 ]
