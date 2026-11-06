@@ -83,25 +83,49 @@ const crear = async (datos) => {
   return rows[0];
 };
 
-// Actualizar curso (Admin)
+// Actualizar curso (Admin) - Versión con saneamiento de strings vacíos a null
 const actualizar = async (id, datos) => {
-  const { titulo, descripcion, slug, categoria, nivel, resumen, url_portada, publicado } = datos;
+  const camposPermitidos = [
+    'titulo', 
+    'descripcion', 
+    'slug', 
+    'categoria', 
+    'nivel', 
+    'resumen', 
+    'url_portada', 
+    'publicado'
+  ];
+
+  const sets = [];
+  const valores = [];
+  let index = 1;
+
+  for (const [key, value] of Object.entries(datos)) {
+    if (camposPermitidos.includes(key)) {
+      sets.push(`${key} = $${index}`);
+      
+      // 🟢 Si el campo es 'categoria' (o cualquiera) y viene como string vacío "", lo convertimos a null
+      const valorSanitizado = (value === "") ? null : value;
+      
+      valores.push(valorSanitizado);
+      index++;
+    }
+  }
+
+  if (sets.length === 0) {
+    return null;
+  }
+
+  valores.push(id);
+
   const query = `
     UPDATE cursos
-    SET 
-      titulo = COALESCE($1, titulo),
-      descripcion = COALESCE($2, descripcion),
-      slug = COALESCE($3, slug),
-      categoria = COALESCE($4, categoria),
-      nivel = COALESCE($5, nivel),
-      resumen = COALESCE($6, resumen),
-      url_portada = COALESCE($7, url_portada),
-      publicado = COALESCE($8, publicado)
-    WHERE id = $9
+    SET ${sets.join(', ')}
+    WHERE id = $${index}
     RETURNING *;
   `;
-  const values = [titulo, descripcion, slug, categoria, nivel, resumen, url_portada, publicado, id];
-  const { rows } = await db.query(query, values);
+
+  const { rows } = await db.query(query, valores);
   return rows[0];
 };
 
