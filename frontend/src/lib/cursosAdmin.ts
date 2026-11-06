@@ -1,5 +1,5 @@
 import { pedir } from './apiClient'
-import { extraerDetalle, normalizarCurso, obtenerCursos, type Course, type Nivel } from './courses'
+import { extraerDetalle, extraerLista, normalizarCurso, type Course, type Nivel } from './courses'
 
 // Administración de cursos del panel admin (basado en contrato v1)
 // Todas las rutas piden token de administrador: sin token el backend responde 401 y con un token de alumno, 403.
@@ -11,17 +11,17 @@ export type DatosCurso = {
   slug: string
   descripcion?: string
   resumen?: string
-  categoria?: string
+  categoria?: string | null
   nivel?: Nivel
   url_portada?: string | null
   publicado?: boolean
 }
 
-// Hoy GET /api/courses devuelve solo los cursos publicados y sin el campo
-// publicado, así que el panel todavía no puede listar los borradores. Se le
-// pidió a Backend una lista para admin; cuando exista, solo se cambia esto.
-export function obtenerCursosAdmin(signal?: AbortSignal): Promise<Course[]> {
-  return obtenerCursos(signal)
+// Lista del panel admin: trae también los borradores y el campo publicado.
+// El catálogo sigue usando GET /api/courses, que solo trae los publicados
+export async function obtenerCursosAdmin(signal?: AbortSignal): Promise<Course[]> {
+  const respuesta = await pedir<unknown>('/api/courses/admin/todos', { signal })
+  return extraerLista(respuesta).map(normalizarCurso)
 }
 
 // El backend ignora publicado al crear: todo curso nuevo nace como publicado!

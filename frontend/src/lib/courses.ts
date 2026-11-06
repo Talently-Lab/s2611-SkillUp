@@ -59,7 +59,7 @@ export function normalizarCurso(crudo: CursoCrudo): Course {
   }
 }
 
-function extraerLista(respuesta: unknown): CursoCrudo[] {
+export function extraerLista(respuesta: unknown): CursoCrudo[] {
   if (typeof respuesta !== 'object' || respuesta === null) {
     throw new Error('Respuesta inválida de GET /api/courses')
   }
