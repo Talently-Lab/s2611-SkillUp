@@ -72,12 +72,51 @@ function AdminUsers() {
 
 function TablaUsuarios({ usuarios }: { usuarios: Usuario[] }) {
   return (
-    // Focusable para que en mobile se pueda scrollear la tabla con el teclado
+    <>
+      {/* Vista mobile: cada usuario como tarjeta, igual que en Administrar cursos */}
+      <ul aria-label="Usuarios registrados" className="flex flex-col gap-3 md:hidden">
+        {usuarios.map((usuario) => (
+          <li
+            key={usuario.id}
+            className="rounded-2xl border border-ink/10 bg-surface p-4 shadow-xs"
+          >
+            <div className="flex items-start justify-between gap-2">
+              {/* min-w-0 + break-words: un correo largo no empuja la tarjeta fuera de los 375px */}
+              <div className="min-w-0">
+                <p className="font-semibold break-words text-ink">
+                  {usuario.nombre || usuario.correo}
+                </p>
+                {usuario.nombre && (
+                  <p className="text-xs break-words text-ink/70">{usuario.correo}</p>
+                )}
+              </div>
+              <Badge tone={ROLES[usuario.rol].tone} className="shrink-0">
+                {ROLES[usuario.rol].label}
+              </Badge>
+            </div>
+
+            <p className="mt-3 text-xs text-ink/80">
+              Registrado el{' '}
+              <time dateTime={usuario.fechaRegistro}>{formatearFecha(usuario.fechaRegistro)}</time>
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      {/* Vista desktop: tabla completa */}
+      <TablaUsuariosDesktop usuarios={usuarios} />
+    </>
+  )
+}
+
+function TablaUsuariosDesktop({ usuarios }: { usuarios: Usuario[] }) {
+  return (
+    // Focusable para que se pueda scrollear la tabla con el teclado
     <div
       role="region"
       aria-label="Usuarios registrados"
       tabIndex={0}
-      className="overflow-x-auto rounded-2xl border border-ink/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
+      className="hidden overflow-x-auto rounded-2xl border border-ink/10 md:block focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
     >
       <table className="w-full min-w-xl text-left text-sm">
         <caption className="sr-only">Usuarios registrados en la plataforma</caption>
