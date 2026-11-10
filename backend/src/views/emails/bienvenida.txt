@@ -1,0 +1,15 @@
+¡Hola, {{nombre}}!
+
+¡Te damos la bienvenida a SkillUp Campus!
+
+Tu cuenta ha sido creada exitosamente. Nos alegra darte la bienvenida a nuestra comunidad de aprendizaje.
+
+A partir de ahora tenés acceso a nuestro catálogo completo de cursos interactivos, clases estructuradas y seguimiento en tiempo real de tu progreso.
+
+Accedé a la plataforma desde el siguiente enlace:
+{{loginUrl}}
+
+---
+© {{currentYear}} SkillUp Campus. Todos los derechos reservados.
+Has recibido este correo electrónico porque te registraste en nuestra plataforma.
+
