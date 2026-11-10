@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/userModel');
+const { enviarCorreoBienvenida } = require('../utils/emailHelper');
 
 // Registro
 const register = async (req, res) => {
@@ -37,6 +38,14 @@ const register = async (req, res) => {
       nombre,
       apellido
     );
+
+    // Envío asíncrono no bloqueante del correo de bienvenida (Background / Fire-and-forget)
+    enviarCorreoBienvenida({
+      correo: nuevoUsuario.correo || correo,
+      nombre: nuevoUsuario.nombre || nombre,
+    }).catch((emailErr) => {
+      console.error('[AuthController] Error no capturado en envío de bienvenida:', emailErr);
+    });
 
     return res.status(201).json({
       mensaje: 'Usuario registrado exitosamente',
