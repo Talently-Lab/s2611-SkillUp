@@ -18,26 +18,23 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const base = [
-  'relative isolate inline-flex items-center justify-center gap-2 overflow-hidden',
-  'rounded-xl font-semibold transition-colors duration-200',
+  'relative inline-flex items-center justify-center gap-2 overflow-hidden',
+  'rounded-xl font-semibold',
   'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink',
-    'cursor-pointer disabled:cursor-not-allowed disabled:opacity-50',
+  'cursor-pointer disabled:cursor-not-allowed disabled:opacity-50',
 ].join(' ')
 
 const variants: Record<Variant, string> = {
   primary: [
-    'bg-primary text-ink',
-    // Relleno oblicuo con degradado que entra de izquierda a derecha en hover
-    'before:absolute before:inset-y-0 before:-left-1/4 before:-z-10 before:w-[150%]',
-    'before:-translate-x-full before:-skew-x-20',
-    'before:bg-linear-to-r before:from-primary-soft before:to-cream',
-    'before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.22,1,0.36,1)]',
-    'not-disabled:hover:before:translate-x-0 focus-visible:before:translate-x-0',
-    'motion-reduce:before:transition-none',
+    'btn-primary-fill text-ink',
+    'transition-[background-position] duration-350 ease-[cubic-bezier(0.22,1,0.36,1)]',
+    'not-disabled:hover:bg-left focus-visible:bg-left',
+    'motion-reduce:transition-none',
   ].join(' '),
-  secondary: 'border border-ink/20 bg-surface text-ink not-disabled:hover:bg-cream',
-  ghost: 'text-ink not-disabled:hover:bg-ink/5',
-  danger: 'bg-danger text-white not-disabled:hover:bg-danger/90',
+  secondary:
+    'border border-ink/20 bg-surface text-ink transition-colors duration-200 not-disabled:hover:bg-cream',
+  ghost: 'text-ink transition-colors duration-200 not-disabled:hover:bg-ink/5',
+  danger: 'bg-danger text-white transition-colors duration-200 not-disabled:hover:bg-danger/90',
 }
 
 const sizes: Record<Size, string> = {

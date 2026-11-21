@@ -98,7 +98,7 @@ function Register() {
 
       <p className="mt-6 text-center text-sm text-ink/70">
         ¿Ya tenés cuenta?{' '}
-        <Link to="/login" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">
+        <Link to="/login" className="font-semibold text-ink underline-offset-4 hover:underline focus-visible:underline">
           Iniciá sesión
         </Link>
       </p>

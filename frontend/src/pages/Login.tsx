@@ -98,7 +98,7 @@ function Login() {
 
       <p className="mt-6 text-center text-sm text-ink/70">
         ¿Todavía no tenés cuenta?{' '}
-        <Link to="/registro" className="font-semibold text-ink underline underline-offset-4 hover:no-underline">
+        <Link to="/registro" className="font-semibold text-ink underline-offset-4 hover:underline focus-visible:underline">
           Registrate
         </Link>
       </p>
