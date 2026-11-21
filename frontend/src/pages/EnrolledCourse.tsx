@@ -253,7 +253,7 @@ function ClaseItem({ numero, clase, onVista }: ClaseItemProps) {
               href={clase.urlExterna}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 font-semibold underline underline-offset-4 hover:no-underline"
+              className="inline-flex items-center gap-1 rounded-md font-semibold underline decoration-ink/30 underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink"
             >
               Abrir material
               <span className="sr-only"> (se abre en una pestaña nueva)</span>
